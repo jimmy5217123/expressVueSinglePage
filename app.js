@@ -3,10 +3,10 @@ const app = express()
 const path = require('path')
 const port = 3000
 
-app.use(express.static('front/dist'))
+app.use(express.static('client/dist'))
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'front/dist/index.html'))
+  res.sendFile(path.resolve(__dirname, 'client/dist/index.html'))
 })
 
 app.post('/test', (req, res) => {
