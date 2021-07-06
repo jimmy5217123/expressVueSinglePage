@@ -22,7 +22,9 @@ export default {
   methods: {
   },
   async mounted () {
-    const test = await axios.post('/test')
+    const test = await axios.post('/getInfo', {
+      str: 'sssss'
+    })
     console.log(test)
   }
 }
