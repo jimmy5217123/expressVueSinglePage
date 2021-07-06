@@ -8,6 +8,25 @@
   </div>
 </template>
 
+<script>
+import axios from 'axios'
+export default {
+  components: {
+  },
+  data () {
+    return {
+    }
+  },
+  computed: {
+  },
+  methods: {
+  },
+  async mounted () {
+    const test = await axios.post('/test')
+    console.log(test)
+  }
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
