@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <router-link to="/">Product</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   components: {
   },
@@ -22,10 +22,10 @@ export default {
   methods: {
   },
   async mounted () {
-    const test = await axios.post('/getInfo', {
-      str: 'aaa'
-    })
-    console.log(test)
+    // const setProduct = await axios.post('/getSetProduct')
+    // const singleProduct = await axios.post('/getSingleProduct')
+    // const otherProduct = await axios.post('/getOtherProduct')
+    // console.log(setProduct, singleProduct, otherProduct)
   }
 }
 </script>

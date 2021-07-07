@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
   host     : '127.0.0.1',
   user     : 'root',
   password : 'may1234567',
-  database: 'test'
+  database: 'product'
 })
 connection.connect(function(err) {
   if (err) {
@@ -29,9 +29,22 @@ app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'client/dist/index.html'))
 })
 
-app.post('/getInfo', (req, res) => {
-  if (!req.body.str) res.json([])
-  connection.query(`SELECT * FROM info Where ACME持有狀態 = '${req.body.str}'`, function(err, rows, fields) {
+app.post('/getSetProduct', (req, res) => {
+  connection.query(`SELECT * FROM set_product`, function(err, rows, fields) {
+    if (err) throw err
+    res.json(rows)
+  })
+})
+
+app.post('/getSingleProduct', (req, res) => {
+  connection.query(`SELECT * FROM single_product`, function(err, rows, fields) {
+    if (err) throw err
+    res.json(rows)
+  })
+})
+
+app.post('/getOtherProduct', (req, res) => {
+  connection.query(`SELECT * FROM other_product`, function(err, rows, fields) {
     if (err) throw err
     res.json(rows)
   })

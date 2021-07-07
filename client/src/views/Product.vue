@@ -1,0 +1,35 @@
+<template>
+  <div>
+    <div style="display:flex">
+      <div v-for="(i, idx) in setProduct.data" :key="idx" style="width:250px">
+        <h3>{{i.setName}}</h3>
+        <img :src="i.setImage" style="width:200px">
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+export default {
+  components: {
+  },
+  data () {
+    return {
+      setProduct: '',
+      singleProduct: '',
+      otherProduct: ''
+    }
+  },
+  computed: {
+  },
+  methods: {
+  },
+  async mounted () {
+    this.setProduct = await axios.post('/getSetProduct')
+    this.singleProduct = await axios.post('/getSingleProduct')
+    this.otherProduct = await axios.post('/getOtherProduct')
+    console.log(this.setProduct)
+  }
+}
+</script>
