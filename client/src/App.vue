@@ -23,7 +23,7 @@ export default {
   },
   async mounted () {
     const test = await axios.post('/getInfo', {
-      str: 'sssss'
+      str: 'aaa'
     })
     console.log(test)
   }

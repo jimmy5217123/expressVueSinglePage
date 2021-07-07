@@ -3,7 +3,11 @@ const app = express()
 const path = require('path')
 const port = 3000
 const mysql = require('mysql')
-// const bodyParser = require('body-parser')
+app.use(express.json()) // Express v4.16.0 and higher No more body-parser use this
+app.use(express.urlencoded({
+  extended: true
+}))
+
 const connection = mysql.createConnection({
   host     : '127.0.0.1',
   user     : 'root',
@@ -20,12 +24,14 @@ connection.connect(function(err) {
 
 app.use(express.static('client/dist'))
 
+
 app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'client/dist/index.html'))
 })
 
 app.post('/getInfo', (req, res) => {
-  connection.query(`SELECT * FROM info Where ACME持有狀態 = 'asdasd'`, function(err, rows, fields) {
+  if (!req.body.str) res.json([])
+  connection.query(`SELECT * FROM info Where ACME持有狀態 = '${req.body.str}'`, function(err, rows, fields) {
     if (err) throw err
     res.json(rows)
   })
