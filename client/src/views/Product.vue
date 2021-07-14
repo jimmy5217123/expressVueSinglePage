@@ -3,7 +3,7 @@
     <div style="display:flex">
       <div v-for="(i, idx) in setProduct.data" :key="idx" style="width:250px">
         <h3>{{i.setName}}</h3>
-        <img :src="i.setImage" style="width:200px">
+        <img :src="i.setImage" style="width:200px" @click="aaa(i.setId)">
       </div>
     </div>
   </div>
@@ -24,6 +24,9 @@ export default {
   computed: {
   },
   methods: {
+    aaa (id) {
+      console.log(id)
+    }
   },
   async mounted () {
     this.setProduct = await axios.post('/getSetProduct')
