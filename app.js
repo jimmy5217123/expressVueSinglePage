@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const path = require('path')
-const port = 3000
+const port = 4000
 const mysql = require('mysql')
 app.use(express.json()) // Express v4.16.0 and higher No more body-parser use this
 app.use(express.urlencoded({
@@ -45,6 +45,20 @@ app.post('/getSingleProduct', (req, res) => {
 
 app.post('/getOtherProduct', (req, res) => {
   connection.query(`SELECT * FROM other_product`, function(err, rows, fields) {
+    if (err) throw err
+    res.json(rows)
+  })
+})
+
+app.post('/joinTest', (req, res) => {
+  connection.query(`SELECT * FROM member INNER JOIN single_order ON single_order.soBelongOrder = member.memId WHERE memId = '1000';`, function(err, rows, fields) {
+    if (err) throw err
+    res.json(rows)
+  })
+})
+
+app.post('/login', (req, res) => {
+  connection.query(`SELECT * FROM product.member WHERE memEmail = '${req.body.account}' AND memPsw = '${req.body.password}';`, function(err, rows, fields) {
     if (err) throw err
     res.json(rows)
   })

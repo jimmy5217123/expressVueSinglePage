@@ -32,7 +32,8 @@ export default {
     this.setProduct = await axios.post('/getSetProduct')
     this.singleProduct = await axios.post('/getSingleProduct')
     this.otherProduct = await axios.post('/getOtherProduct')
-    console.log(this.setProduct)
+    const joinTest = await axios.post('/joinTest')
+    console.log(joinTest)
   }
 }
 </script>
