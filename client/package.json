@@ -9,11 +9,14 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "watch": "vue-cli-service build --watch"
+    "watch": "vue-cli-service build --watch",
+    "start": "node dist/app.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
+    "path": "^0.12.7",
     "sass": "^1.36.0",
     "sass-loader": "^10.2.0",
     "vue": "^2.6.11",

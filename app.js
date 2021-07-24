@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const path = require('path')
-const port = 4000
+const port = process.env.PORT || 4000
 const mysql = require('mysql')
 app.use(express.json()) // Express v4.16.0 and higher No more body-parser use this
 app.use(express.urlencoded({
