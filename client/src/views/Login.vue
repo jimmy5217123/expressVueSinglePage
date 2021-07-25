@@ -38,8 +38,8 @@ import router from '../router'
 export default {
   data () {
     return {
-      account: '',
-      password: ''
+      account: 'f1020@gmail.com',
+      password: 'a1234567A'
     }
   },
   methods: {
