@@ -8,37 +8,23 @@ app.use(express.json()) // Express v4.16.0 and higher No more body-parser use th
 app.use(express.urlencoded({
   extended: true
 }))
+app.use(express.static('./dist'))
+app.use(express.static('./public'))
 
-// const connection = mysql.createConnection({
-//   host     : 'us-cdbr-east-04.cleardb.com',
-//   user     : 'b7cc7e172f5d6d',
-//   password : '70b0d6cd',
-//   database: 'heroku_94648fbef613f3b'
-// })
-// connection.connect(function(err) {
-//   if (err) {
-//       console.log('connecting error')
-//       return
-//   }
-//   console.log('db connecting success')
-// })
+app.get('/*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './index.html'))
+})
+
 const pool = mysql.createPool({
   host     : 'us-cdbr-east-04.cleardb.com',
   user     : 'b7cc7e172f5d6d',
   password : '70b0d6cd',
   database: 'heroku_94648fbef613f3b'
 })
-
-app.use(express.static('./dist'))
-
-app.get('/*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './index.html'))
-})
-
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './dist/images')
+    cb(null, './public/images')
   },
   filename: function (req, file, cb){
     cb(null, file.originalname)
