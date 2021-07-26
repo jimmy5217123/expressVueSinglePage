@@ -65,6 +65,7 @@ export default {
       formData.append('file', file.files[0])
       const sss = await axios.post('/upload', formData)
       console.log(sss)
+      this.setProduct = await axios.post('/getSetProduct')
     }
   },
   async mounted () {

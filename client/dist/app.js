@@ -23,8 +23,8 @@ const pool = mysql.createPool({
 })
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './dist/images')
-    cb(null, './public/images')
+    cb(null, './dist/images/bandon_include')
+    cb(null, './public/images/bandon_include')
   },
   filename: function (req, file, cb){
     cb(null, file.originalname)
@@ -33,11 +33,19 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
-  const url = '/images/'+ req.file.filename
-    res.json({
-      code : 200,
-      data : url
+  const url = './images/bandon_include/'+ req.file.filename
+  pool.getConnection((err, connection) => {
+    if(err) throw err;
+    connection.query(`INSERT INTO set_product VALUES ('', 'test',130,800,21,96,0,'${url}','寶島食堂嚴選冰島鱈魚，無細刺，肉質滑嫩鮮甜，如雪花般入口即化的綿密感魚肉更富含OMEGA-3即DHA、EPA適合成長中的孩子食用。',1)`, (err, rows) => {
+      connection.release() // return the connection to pool
+      if(err) throw err
+      // res.json(rows)
     })
+  })
+  res.json({
+    code : 200,
+    data : url
+  })
 })
 
 app.post('/getSetProduct', (req, res) => {
