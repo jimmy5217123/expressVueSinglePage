@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const path = require('path')
+const multer = require('multer')
 const port = process.env.PORT || 4000
 const mysql = require('mysql')
 app.use(express.json()) // Express v4.16.0 and higher No more body-parser use this
@@ -32,6 +33,25 @@ app.use(express.static('./dist'))
 
 app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './index.html'))
+})
+
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './dist/images')
+  },
+  filename: function (req, file, cb){
+    cb(null, file.originalname)
+  }
+});
+const upload = multer({storage: storage});
+
+app.post('/upload', upload.single('file'), function (req, res, next) {
+  const url = '/images/'+ req.file.filename
+    res.json({
+      code : 200,
+      data : url
+    })
 })
 
 app.post('/getSetProduct', (req, res) => {

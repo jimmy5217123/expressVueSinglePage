@@ -13,6 +13,16 @@
         </div>
       </div>
     </div>
+    <div style="width">
+      <h2>bangTon上架</h2>
+      <div>
+        <form>
+          圖片:<input id="imgFile" type='file'  accept="image/*" @change="loadImgFile">
+        </form>
+        <img id='upImg' width="200px" height="180px">
+        <button @click="postImage">上傳</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,7 +35,8 @@ export default {
     return {
       setProduct: '',
       singleProduct: '',
-      otherProduct: ''
+      otherProduct: '',
+      uploadImg: ''
     }
   },
   computed: {
@@ -34,6 +45,26 @@ export default {
     plusInSaleCar (idx) {
       const num = document.getElementsByName('setHowMany')[idx].value
       console.log(num)
+    },
+    loadImgFile (event) {
+      for (let i = 0; i < event.target.files.length; i++) {
+        const reader = new FileReader()
+        const obj = {}
+        reader.readAsDataURL(event.target.files[i])
+        reader.onload = function () {
+          obj.photoName = event.target.files[i].name
+          obj.photoBase64 = reader.result.split(',')[1]
+          obj.fileType = event.target.files[i].name.split('.')[1]
+          document.getElementById('upImg').src = reader.result
+        }
+      }
+    },
+    async postImage () {
+      const formData = new FormData()
+      const file = document.getElementById('imgFile')
+      formData.append('file', file.files[0])
+      const sss = await axios.post('/upload', formData)
+      console.log(sss)
     }
   },
   async mounted () {
