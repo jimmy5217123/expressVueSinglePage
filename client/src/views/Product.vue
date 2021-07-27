@@ -16,11 +16,20 @@
     <div style="width">
       <h2>bangTon上架</h2>
       <div>
-        <form>
-          圖片:<input id="imgFile" type='file'  accept="image/*" @change="loadImgFile">
+        <form id='myForm' enctype="multipart/form-data">
+          <div>
+            <label for="imgFile">Upload file:</label>
+            <input id="imgFile" name="imgFile" type='file'  accept="image/*" @change="loadImgFile">
+          <!-- </div>
+          <div> -->
+            <label for="bangTonName">bangTonName:</label>
+            <input type="text" name="bangTonName" id="bangTonName">
+          </div>
         </form>
-        <img id='upImg' width="200px" height="180px">
-        <button @click="postImage">上傳</button>
+        <div>
+          <img id='upImg' width="300px" height="250px" style="margin-top:20px">
+          <button @click="upLoadForm" style="margin-left:10px">上架</button>
+        </div>
       </div>
     </div>
   </div>
@@ -59,12 +68,10 @@ export default {
         }
       }
     },
-    async postImage () {
-      const formData = new FormData()
-      const file = document.getElementById('imgFile')
-      formData.append('file', file.files[0])
-      const sss = await axios.post('/upload', formData)
-      console.log(sss)
+    async upLoadForm () {
+      const myForm = document.getElementById('myForm')
+      const formData = new FormData(myForm)
+      await axios.post('/upload', formData)
       this.setProduct = await axios.post('/getSetProduct')
     }
   },

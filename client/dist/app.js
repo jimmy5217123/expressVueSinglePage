@@ -15,6 +15,12 @@ app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './index.html'))
 })
 
+// const pool = mysql.createPool({
+//   host     : '127.0.0.1',
+//   user     : 'root',
+//   password : 'may1234567',
+//   database: 'product'
+// })
 const pool = mysql.createPool({
   host     : 'us-cdbr-east-04.cleardb.com',
   user     : 'b7cc7e172f5d6d',
@@ -30,21 +36,21 @@ const storage = multer.diskStorage({
     cb(null, file.originalname)
   }
 });
-const upload = multer({storage: storage});
+const upload = multer({storage: storage})
 
-app.post('/upload', upload.single('file'), function (req, res, next) {
+app.post('/upload', upload.single('imgFile'), function (req, res, next) {
+  const body = req.body
   const url = './images/bandon_include/'+ req.file.filename
   pool.getConnection((err, connection) => {
     if(err) throw err;
-    connection.query(`INSERT INTO set_product VALUES ('', 'test',130,800,21,96,0,'${url}','寶島食堂嚴選冰島鱈魚，無細刺，肉質滑嫩鮮甜，如雪花般入口即化的綿密感魚肉更富含OMEGA-3即DHA、EPA適合成長中的孩子食用。',1)`, (err, rows) => {
+    connection.query(`INSERT INTO set_product VALUES (0,'${body.bangTonName}',130,800,21,96,0,'${url}','寶島食堂嚴選冰島鱈魚，無細刺，肉質滑嫩鮮甜，如雪花般入口即化的綿密感魚肉更富含OMEGA-3即DHA、EPA適合成長中的孩子食用。',1)`, (err, rows) => {
       connection.release() // return the connection to pool
       if(err) throw err
       // res.json(rows)
     })
   })
   res.json({
-    code : 200,
-    data : url
+    code : 200
   })
 })
 
