@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div id="nav" v-if="memberInfo">
+      <img id='memImg' src="" height="30px" width="30px">
       <p>{{memberInfo.memName}}</p>
     </div>
     <router-view/>
@@ -9,7 +10,8 @@
 
 <script>
 // import axios from 'axios'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
+import cookies from 'vue-cookies'
 export default {
   components: {
   },
@@ -20,11 +22,17 @@ export default {
   computed: {
     ...mapState([
       'memberInfo'
+    ]),
+    ...mapMutations([
+      'MEMBER_STATUS'
     ])
   },
   methods: {
   },
-  async mounted () {
+  mounted () {
+    if (cookies.get('memberInfo')) {
+      this.MEMBER_STATUS(cookies.get('memberInfo'))
+    }
   }
 }
 </script>
@@ -38,8 +46,11 @@ export default {
 }
 
 #nav {
-  padding: 20px;
+  display: flex;
+  padding: 15px;
   background: #2c3e50;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 #nav a {
@@ -47,7 +58,6 @@ export default {
   color: #2c3e50;
 }
 #nav p {
-  text-align: end;
   margin: 0px;
   padding: 0px;
   color: aliceblue;

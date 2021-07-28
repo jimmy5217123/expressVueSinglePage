@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import router from '../router'
+import cookies from 'vue-cookies'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -9,6 +10,9 @@ export default new Vuex.Store({
     memberInfo: ''
   },
   mutations: {
+    MEMBER_STATUS (state, payload) {
+      state.memberInfo = payload
+    }
   },
   actions: {
     async memlogin ({ state }, account) {
@@ -19,6 +23,7 @@ export default new Vuex.Store({
         })
       if (member.data) {
         state.memberInfo = member.data
+        cookies.set('memberInfo', state.memberInfo)
         alert('success')
         router.push({
           path: '/product'
