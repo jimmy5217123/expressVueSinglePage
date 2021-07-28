@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav" v-if="memberInfo">
-      <img id='memImg' src="" height="30px" width="30px">
+      <img id='memImg' :src="memberInfo.memImage" height="40px" width="40px" style="margin:5px">
       <p>{{memberInfo.memName}}</p>
     </div>
     <router-view/>
@@ -22,16 +22,17 @@ export default {
   computed: {
     ...mapState([
       'memberInfo'
-    ]),
+    ])
+  },
+  methods: {
     ...mapMutations([
       'MEMBER_STATUS'
     ])
   },
-  methods: {
-  },
   mounted () {
     if (cookies.get('memberInfo')) {
-      this.MEMBER_STATUS(cookies.get('memberInfo'))
+      const memberInfo = cookies.get('memberInfo')
+      this.MEMBER_STATUS(memberInfo)
     }
   }
 }
@@ -47,7 +48,7 @@ export default {
 
 #nav {
   display: flex;
-  padding: 15px;
+  padding: 5px;
   background: #2c3e50;
   justify-content: flex-end;
   align-items: center;

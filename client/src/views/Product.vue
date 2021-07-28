@@ -135,7 +135,7 @@ export default {
     width: 350px;
     top:50%;
     left: 50%;
-    transform: translate(-50%);
+    transform: translate(-50%, -50%);
     background: rgb(110, 194, 209);
     .formStyle{
       text-align: center;
