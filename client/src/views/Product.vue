@@ -153,4 +153,9 @@ export default {
       }
     }
   }
+  @media only screen and (max-width:576px) {
+    .flexbox{
+      justify-content: center !important;
+    }
+  }
 </style>

@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Product</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
+    <div id="nav" v-if="memberInfo">
+      <p>{{memberInfo.memName}}</p>
+    </div>
     <router-view/>
   </div>
 </template>
 
 <script>
 // import axios from 'axios'
+import { mapState } from 'vuex'
 export default {
   components: {
   },
@@ -18,14 +18,13 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'memberInfo'
+    ])
   },
   methods: {
   },
   async mounted () {
-    // const setProduct = await axios.post('/getSetProduct')
-    // const singleProduct = await axios.post('/getSingleProduct')
-    // const otherProduct = await axios.post('/getOtherProduct')
-    // console.log(setProduct, singleProduct, otherProduct)
   }
 }
 </script>
@@ -39,12 +38,19 @@ export default {
 }
 
 #nav {
-  padding: 30px;
+  padding: 20px;
+  background: #2c3e50;
 }
 
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+}
+#nav p {
+  text-align: end;
+  margin: 0px;
+  padding: 0px;
+  color: aliceblue;
 }
 
 #nav a.router-link-exact-active {

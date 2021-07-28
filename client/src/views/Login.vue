@@ -12,15 +12,15 @@
     <form class="login-form" >
         <div class="input-content">
             <div>
-                <input type="text" v-model="account" placeholder="使用者名稱" v-on:keyup.enter="memlogin()"/>
+                <input type="text" v-model="account" placeholder="使用者名稱" v-on:keyup.enter="login()"/>
             </div>
             <div style="margin-top: 16px">
-                <input type="password" v-model="password" placeholder="登入密碼" v-on:keyup.enter="memlogin()"/>
+                <input type="password" v-model="password" placeholder="登入密碼" v-on:keyup.enter="login()"/>
             </div>
         </div>
 
         <div style="text-align: center">
-            <button type="button" class="enter-btn" @click="memlogin()">登入</button>
+            <button type="button" class="enter-btn" @click="login()">登入</button>
         </div>
         <!-- <div class="foor">
             <div class="left"><span>忘記密碼 ?</span></div>
@@ -33,8 +33,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-import router from '../router'
+// import axios from 'axios'
+// import router from '../router'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -43,20 +44,15 @@ export default {
     }
   },
   methods: {
-    async memlogin () {
-      const member = await axios.post('/login',
-        {
-          account: this.account,
-          password: this.password
-        })
-      if (member.data.length > 0) {
-        alert('success')
-        router.push({
-          path: '/product'
-        }).catch(() => {})
-      } else {
-        alert('no data')
+    ...mapActions([
+      'memlogin'
+    ]),
+    login () {
+      const obj = {
+        account: this.account,
+        password: this.password
       }
+      this.memlogin(obj)
     }
   },
   computed: {

@@ -104,7 +104,7 @@ app.post('/login', (req, res) => {
     connection.query(`SELECT * FROM member WHERE memEmail = '${req.body.account}' AND memPsw = '${req.body.password}';`, (err, rows) => {
       connection.release() // return the connection to pool
       if(err) throw err
-      res.json(rows)
+      res.json(rows[0])
     })
   })
 })
