@@ -53,7 +53,8 @@ export default {
       singleProduct: '',
       otherProduct: '',
       uploadImg: '',
-      formOpen: false
+      formOpen: false,
+      memSetOrder: []
     }
   },
   computed: {
@@ -84,13 +85,24 @@ export default {
         this.setProduct = await axios.post('/getSetProduct')
       }
       this.formOpen = false
+    },
+    async getMemberOrder () {
+      const memSetOrder = await axios.post('/getMemOrder')
+      if (memSetOrder.data) {
+        const array = []
+        memSetOrder.data.forEach(x => {
+          const obj = this.setProduct.data.find(y => y.setId === x.setoId)
+          array.push(obj)
+        })
+        this.memSetOrder = array
+      }
     }
   },
   async mounted () {
     this.setProduct = await axios.post('/getSetProduct')
+    this.getMemberOrder()
     // this.singleProduct = await axios.post('/getSingleProduct')
     // this.otherProduct = await axios.post('/getOtherProduct')
-    // const joinTest = await axios.post('/joinTest')
     // console.log(this.setProduct)
     // console.log(joinTest)
   }
@@ -101,8 +113,8 @@ export default {
   .containter{
     // position: relative;
     // width: 95%;
-    margin-right: 5%;
-    margin-left: 5%;
+    margin-right: 3%;
+    margin-left: 3%;
     // margin: 0 5%;
     // /* box-sizing: border-box; */
   }
@@ -136,7 +148,7 @@ export default {
     top:50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgb(110, 194, 209);
+    background: #ade99f;
     .formStyle{
       text-align: center;
       .formDiv {

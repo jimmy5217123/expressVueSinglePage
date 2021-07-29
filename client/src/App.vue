@@ -1,8 +1,13 @@
 <template>
   <div id="app">
+    <div class="orderBox" v-if="showOrder">
+      <!-- <div v-for=""> -->
+      <!-- </div> -->
+    </div>
     <div id="nav" v-if="memberInfo">
-      <img id='memImg' :src="memberInfo.memImage" height="40px" width="40px" style="margin:5px">
-      <p>{{memberInfo.memName}}</p>
+      <p class="navMargin" @click="showOrder = !showOrder">我的訂單</p>
+      <img id='memImg' :src="memberInfo.memImage" height="40px" width="40px" style="margin-left:5px">
+      <p class="navMargin">{{memberInfo.memName}}</p>
     </div>
     <router-view/>
   </div>
@@ -17,6 +22,7 @@ export default {
   },
   data () {
     return {
+      showOrder: false
     }
   },
   computed: {
@@ -63,7 +69,18 @@ export default {
   padding: 0px;
   color: aliceblue;
 }
-
+.navMargin {
+  margin: 0px 10px !important;
+}
+.orderBox {
+  position: fixed;
+  top: 50px;
+  right:0px;
+  width: 350px;
+  height: 100%;
+  background: green;
+  opacity: 0.7;
+}
 #nav a.router-link-exact-active {
   color: #42b983;
 }

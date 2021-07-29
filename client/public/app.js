@@ -87,10 +87,11 @@ app.post('/getOtherProduct', (req, res) => {
   })
 })
 
-app.post('/joinTest', (req, res) => {
+app.post('/getMemOrder', (req, res) => {
   pool.getConnection((err, connection) => {
     if(err) throw err;
-    connection.query(`SELECT * FROM member INNER JOIN single_order ON single_order.soBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+    // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+    connection.query(`SELECT * FROM set_order WHERE setoBelongOrder = '1000';`, (err, rows) => {
       connection.release(); // return the connection to pool
       if(err) throw err;
       res.json(rows)
