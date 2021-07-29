@@ -1,13 +1,12 @@
 <template>
   <div id="app">
     <div class="orderBox" v-if="showOrder">
-      <!-- <div v-for=""> -->
-      <!-- </div> -->
     </div>
+    <div style="height:50px"></div>
     <div id="nav" v-if="memberInfo">
-      <p class="navMargin" @click="showOrder = !showOrder">我的訂單</p>
+      <p class="navMargin" @click="showOrder = !showOrder">購物車</p>
       <img id='memImg' :src="memberInfo.memImage" height="40px" width="40px" style="margin-left:5px">
-      <p class="navMargin">{{memberInfo.memName}}</p>
+      <p class="navMargin" @click="loginOut">{{memberInfo.memName}}</p>
     </div>
     <router-view/>
   </div>
@@ -16,6 +15,7 @@
 <script>
 // import axios from 'axios'
 import { mapState, mapMutations } from 'vuex'
+import router from './router'
 import cookies from 'vue-cookies'
 export default {
   components: {
@@ -33,7 +33,14 @@ export default {
   methods: {
     ...mapMutations([
       'MEMBER_STATUS'
-    ])
+    ]),
+    loginOut () {
+      cookies.remove('memberInfo')
+      this.MEMBER_STATUS(null)
+      router.push({
+        path: '/'
+      }).catch(() => {})
+    }
   },
   mounted () {
     if (cookies.get('memberInfo')) {
@@ -53,6 +60,9 @@ export default {
 }
 
 #nav {
+  position: fixed;
+  top:0px;
+  width: 100%;
   display: flex;
   padding: 5px;
   background: #2c3e50;

@@ -2,17 +2,23 @@
   <div>
     <div class="containter">
       <div class="width" style="display:flex">
-        <h2>bangTon</h2>
-        <button @click="formOpen = !formOpen">上架便當</button>
+        <!-- <h2>bangTon</h2> -->
+        <!-- <button @click="formOpen = !formOpen">上架便當</button> -->
       </div>
       <div class="flexbox">
         <div v-for="(i, idx) in setProduct.data" :key="idx">
-          <h3 style="margin:0">{{i.setName}}</h3>
-          <img :src="i.setImage" style="width:200px; height:180px">
-          <div>數量: <input name="setHowMany" :value="0" type="number"></div>
-          <div style="margin-top:10px">
-            <button @click="plusInSaleCar(idx)">加入購物車</button>
+          <div class="borderBox">
+            <h3 style="margin:0">{{i.setName}}</h3>
+            <img :src="i.setImage" style="width:200px; height:180px">
+            <h3>$ {{i.setPrice}}</h3>
+            <div>數量: <input name="setHowMany" :value="0" type="number"></div>
+            <div style="margin-top:10px">
+              <button @click="plusInSaleCar(idx)">加入購物車</button>
+            </div>
           </div>
+        </div>
+        <div>
+            <button @click="formOpen = !formOpen" style="margin-top:40%">上架便當</button>
         </div>
       </div>
         <div class="upDateForm" v-if="formOpen">
@@ -44,6 +50,8 @@
 
 <script>
 import axios from 'axios'
+import router from '../router'
+import cookies from 'vue-cookies'
 export default {
   components: {
   },
@@ -99,6 +107,11 @@ export default {
     }
   },
   async mounted () {
+    if (!cookies.get('memberInfo')) {
+      router.push({
+        path: '/'
+      }).catch(() => {})
+    }
     this.setProduct = await axios.post('/getSetProduct')
     this.getMemberOrder()
     // this.singleProduct = await axios.post('/getSingleProduct')
@@ -123,13 +136,29 @@ export default {
     flex-wrap: wrap;
     justify-content: start;
     text-align: center;
+    .borderBox{
+      border: 2px solid rgb(214, 152, 38);
+      max-width: 220px;
+      margin: 0 auto;
+      border-radius: 5px;
+      padding: 5px;
+      box-shadow: 2px 2px 2px rgb(214, 152, 38);
+    }
+    h3 {
+      margin: 0;
+      padding: 0;
+    }
     /* max-width: 1400px; */
     /* margin: 0 auto; */
   }
   .flexbox > div {
     /* margin: 10px; */
-    min-width: 250px;
-    width: 16%;
+    min-width: 220px;
+    // width: 25%;
+    width: 20%;
+    margin: 15px 0px;
+    // border: 2px solid rgb(126, 161, 194);
+    box-sizing: border-box;
   }
   .width {
     justify-content: center;
@@ -163,6 +192,20 @@ export default {
         width: 100%;
         text-align: center !important;
       }
+    }
+  }
+  button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover{
+      background: red;
     }
   }
   @media only screen and (max-width:576px) {
