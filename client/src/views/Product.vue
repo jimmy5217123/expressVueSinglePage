@@ -99,7 +99,7 @@ export default {
 
 <style lang="scss" scoped>
   .containter{
-    position: relative;
+    // position: relative;
     // width: 95%;
     margin-right: 5%;
     margin-left: 5%;
@@ -131,7 +131,7 @@ export default {
     }
   }
   .upDateForm{
-    position: absolute;
+    position: fixed;
     width: 350px;
     top:50%;
     left: 50%;

@@ -15,18 +15,18 @@ app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './index.html'))
 })
 
-// const pool = mysql.createPool({
-//   host     : '127.0.0.1',
-//   user     : 'root',
-//   password : 'may1234567',
-//   database: 'product'
-// })
 const pool = mysql.createPool({
-  host     : 'us-cdbr-east-04.cleardb.com',
-  user     : 'b7cc7e172f5d6d',
-  password : '70b0d6cd',
-  database: 'heroku_94648fbef613f3b'
+  host     : '127.0.0.1',
+  user     : 'root',
+  password : 'may1234567',
+  database: 'product'
 })
+// const pool = mysql.createPool({
+//   host     : 'us-cdbr-east-04.cleardb.com',
+//   user     : 'b7cc7e172f5d6d',
+//   password : '70b0d6cd',
+//   database: 'heroku_94648fbef613f3b'
+// })
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './dist/images/bandon_include')
