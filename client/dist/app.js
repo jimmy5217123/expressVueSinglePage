@@ -87,6 +87,50 @@ app.post('/getOtherProduct', (req, res) => {
   })
 })
 
+app.post('/getShopCart', (req, res) => {
+  pool.getConnection((err, connection) => {
+    if(err) throw err;
+    // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+    connection.query(`SELECT * FROM shopping_cart WHERE cartBelonger = '1000';`, (err, rows) => {
+      connection.release(); // return the connection to pool
+      if(err) throw err;
+      if (rows) {
+        res.json(rows)
+      } else {
+        res.json([])
+      }
+    })
+  })
+})
+
+app.post('/insertCart', (req, res) => {
+  pool.getConnection((err, connection) => {
+    if(err) throw err;
+    // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+    connection.query(`INSERT INTO shopping_cart VALUES (0, ${req.body.setId}, ${req.body.num}, ${req.body.memId})`, (err) => {
+      connection.release(); // return the connection to pool
+      if(err) throw err;
+      res.json({
+        code : 200
+      })
+    })
+  })
+})
+
+app.post('/updateCart', (req, res) => {
+  pool.getConnection((err, connection) => {
+    if(err) throw err;
+    // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+    connection.query(`UPDATE  shopping_cart SET carSetAmount = '${req.body.num}' WHERE cartBelonger = '${req.body.memId}' AND cartSetId = '${req.body.setId}'`, (err) => {
+      connection.release(); // return the connection to pool
+      if(err) throw err;
+      res.json({
+        code : 200
+      })
+    })
+  })
+})
+
 app.post('/getMemOrder', (req, res) => {
   pool.getConnection((err, connection) => {
     if(err) throw err;

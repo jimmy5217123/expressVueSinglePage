@@ -13,7 +13,7 @@
             <h3>$ {{i.setPrice}}</h3>
             <div>數量: <input name="setHowMany" :value="0" type="number"></div>
             <div style="margin-top:10px">
-              <button @click="plusInSaleCar(idx)">加入購物車</button>
+              <button @click="insertShopCart(i.setId, idx)">加入購物車</button>
             </div>
           </div>
         </div>
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import axios from 'axios'
 import router from '../router'
 import cookies from 'vue-cookies'
@@ -57,7 +58,7 @@ export default {
   },
   data () {
     return {
-      setProduct: '',
+      // setProduct: '',
       singleProduct: '',
       otherProduct: '',
       uploadImg: '',
@@ -66,11 +67,45 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'memberInfo',
+      'shopCart',
+      'setProduct'
+    ])
   },
   methods: {
-    plusInSaleCar (idx) {
+    ...mapMutations([
+      'SHOP_CART'
+    ]),
+    async insertShopCart (id, idx) {
       const num = document.getElementsByName('setHowMany')[idx].value
-      console.log(num)
+      const setId = id
+      if (this.shopCart.find(x => x.cartSetId === setId)) {
+        const dataBaseNum = this.shopCart.find(x => x.cartSetId === setId)
+        const updateShop = await axios.post('/updateCart',
+          {
+            setId,
+            num: Number(num) + Number(dataBaseNum.carSetAmount),
+            memId: this.memberInfo.memId
+          })
+        if (updateShop.data.code === 200) {
+          this.getShopCart()
+        }
+      } else {
+        const insertShop = await axios.post('/insertCart',
+          {
+            setId,
+            num,
+            memId: this.memberInfo.memId
+          })
+        if (insertShop.data.code === 200) {
+          this.getShopCart()
+        }
+      }
+    },
+    async getShopCart () {
+      const shopCart = await axios.post('/getShopCart')
+      this.SHOP_CART(shopCart.data)
     },
     loadImgFile (event) {
       for (let i = 0; i < event.target.files.length; i++) {
@@ -112,8 +147,9 @@ export default {
         path: '/'
       }).catch(() => {})
     }
-    this.setProduct = await axios.post('/getSetProduct')
+    // this.setProduct = await axios.post('/getSetProduct')
     this.getMemberOrder()
+    this.getShopCart()
     // this.singleProduct = await axios.post('/getSingleProduct')
     // this.otherProduct = await axios.post('/getOtherProduct')
     // console.log(this.setProduct)

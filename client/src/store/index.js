@@ -7,11 +7,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    memberInfo: ''
+    memberInfo: '',
+    shopCart: [],
+    setProduct: []
   },
   mutations: {
     MEMBER_STATUS (state, payload) {
       state.memberInfo = payload
+    },
+    SHOP_CART (state, payload) {
+      state.shopCart = payload
+    },
+    SET_PRODUCT (state, payload) {
+      state.setProduct = payload
     }
   },
   actions: {

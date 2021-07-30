@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <div class="orderBox" v-if="showOrder">
+      <div v-for="i in shopCartNameArray" :key="i">
+        {{i.setName}}
+      </div>
     </div>
     <div style="height:50px"></div>
     <div id="nav" v-if="memberInfo">
@@ -13,7 +16,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import { mapState, mapMutations } from 'vuex'
 import router from './router'
 import cookies from 'vue-cookies'
@@ -22,17 +25,21 @@ export default {
   },
   data () {
     return {
-      showOrder: false
+      showOrder: false,
+      shopCartNameArray: []
     }
   },
   computed: {
     ...mapState([
-      'memberInfo'
+      'memberInfo',
+      'shopCart',
+      'setProduct'
     ])
   },
   methods: {
     ...mapMutations([
-      'MEMBER_STATUS'
+      'MEMBER_STATUS',
+      'SET_PRODUCT'
     ]),
     loginOut () {
       cookies.remove('memberInfo')
@@ -40,13 +47,26 @@ export default {
       router.push({
         path: '/'
       }).catch(() => {})
+    },
+    shopCartData () {
+      const array = []
+      this.shopCart.forEach(x => {
+        const obj = this.setProduct.data.find(y => y.setId === x.cartSetId)
+        array.push(obj)
+      })
+      this.shopCartNameArray = array
+      console.log(this.shopCart)
+      console.log(this.setProduct.data)
+      console.log(this.shopCartNameArray)
     }
   },
-  mounted () {
+  async mounted () {
     if (cookies.get('memberInfo')) {
       const memberInfo = cookies.get('memberInfo')
       this.MEMBER_STATUS(memberInfo)
     }
+    this.SET_PRODUCT(await axios.post('/getSetProduct'))
+    this.shopCartData()
   }
 }
 </script>
