@@ -9,7 +9,9 @@ export default new Vuex.Store({
   state: {
     memberInfo: '',
     shopCart: [],
-    setProduct: []
+    setProduct: [],
+    shopCartArray: [],
+    detailShopChart: []
   },
   mutations: {
     MEMBER_STATUS (state, payload) {
@@ -20,6 +22,9 @@ export default new Vuex.Store({
     },
     SET_PRODUCT (state, payload) {
       state.setProduct = payload
+    },
+    DETAIL_SHOP_CHART (state, payload) {
+      state.detailShopChart = payload
     }
   },
   actions: {
@@ -39,6 +44,20 @@ export default new Vuex.Store({
       } else {
         alert('no data')
       }
+    },
+    async getSetProduct ({ commit }) {
+      const setProduct = await axios.post('/getSetProduct')
+      commit('SET_PRODUCT', setProduct)
+    },
+    async getShopCart ({ state, commit }) {
+      const shopCart = await axios.post('/getShopCart', {
+        memId: state.memberInfo.memId
+      })
+      commit('SHOP_CART', shopCart.data)
+      const detailShopChart = await axios.post('/getdetailShopChart', {
+        memId: state.memberInfo.memId
+      })
+      commit('DETAIL_SHOP_CHART', detailShopChart.data)
     }
   },
   modules: {

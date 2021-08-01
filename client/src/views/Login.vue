@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="height:calc(100vh - 50px)">
   <div class="main">
     <div class="title">
         <span>會員登入</span>
@@ -35,6 +35,8 @@
 <script>
 // import axios from 'axios'
 // import router from '../router'
+import router from '../router'
+import cookies from 'vue-cookies'
 import { mapActions } from 'vuex'
 export default {
   data () {
@@ -58,6 +60,11 @@ export default {
   computed: {
   },
   mounted () {
+    if (cookies.get('memberInfo')) {
+      router.push({
+        path: '/product'
+      }).catch(() => {})
+    }
   }
 }
 </script>
@@ -73,7 +80,7 @@ export default {
     width: 320px;
     height: 350px;
     background: #ade99f;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     margin-top: -170px;

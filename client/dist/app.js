@@ -15,18 +15,18 @@ app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './index.html'))
 })
 
-const pool = mysql.createPool({
-  host     : '127.0.0.1',
-  user     : 'root',
-  password : 'may1234567',
-  database: 'product'
-})
 // const pool = mysql.createPool({
-//   host     : 'us-cdbr-east-04.cleardb.com',
-//   user     : 'b7cc7e172f5d6d',
-//   password : '70b0d6cd',
-//   database: 'heroku_94648fbef613f3b'
+//   host     : '127.0.0.1',
+//   user     : 'root',
+//   password : 'may1234567',
+//   database: 'product'
 // })
+const pool = mysql.createPool({
+  host     : 'us-cdbr-east-04.cleardb.com',
+  user     : 'b7cc7e172f5d6d',
+  password : '70b0d6cd',
+  database: 'heroku_94648fbef613f3b'
+})
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './dist/images/bandon_include')
@@ -91,7 +91,23 @@ app.post('/getShopCart', (req, res) => {
   pool.getConnection((err, connection) => {
     if(err) throw err;
     // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
-    connection.query(`SELECT * FROM shopping_cart WHERE cartBelonger = '1000';`, (err, rows) => {
+    connection.query(`SELECT * FROM shopping_cart WHERE cartBelonger = '${req.body.memId}';`, (err, rows) => {
+      connection.release(); // return the connection to pool
+      if(err) throw err;
+      if (rows) {
+        res.json(rows)
+      } else {
+        res.json([])
+      }
+    })
+  })
+})
+
+app.post('/getdetailShopChart', (req, res) => {
+  pool.getConnection((err, connection) => {
+    if(err) throw err;
+    // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+    connection.query(`SELECT * FROM shopping_cart INNER JOIN set_product ON  setId = cartSetId WHERE cartBelonger = '${req.body.memId}';`, (err, rows) => {
       connection.release(); // return the connection to pool
       if(err) throw err;
       if (rows) {

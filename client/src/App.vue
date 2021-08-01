@@ -1,23 +1,48 @@
 <template>
   <div id="app">
     <div class="orderBox" v-if="showOrder">
-      <div v-for="i in shopCartNameArray" :key="i">
-        {{i.setName}}
+      <div class="shopChartFlexBox" v-for="(i,idx) in detailShopChart" :key="idx">
+        <div>
+          <img :src="i.setImage" width="150px" height="150px">
+        </div>
+        <div class="shopChartText">
+          <p>{{i.setName}} * {{i.carSetAmount}}</p>
+          <p>單價: {{i.setPrice}}</p>
+          <p>總共: {{i.setPrice * i.carSetAmount}}</p>
+        </div>
       </div>
     </div>
     <div style="height:50px"></div>
     <div id="nav" v-if="memberInfo">
-      <p class="navMargin" @click="showOrder = !showOrder">購物車</p>
-      <img id='memImg' :src="memberInfo.memImage" height="40px" width="40px" style="margin-left:5px">
-      <p class="navMargin" @click="loginOut">{{memberInfo.memName}}</p>
+      <router-link class="logo" to='/product'>BangTon</router-link>
+      <div style="display:flex; align-items: center; margin-right:15px">
+        <router-link class="navMargin moblieNot" to='/product'>產品</router-link>
+        <router-link class="navMargin moblieNot" to='/historyorder'>歷史訂單</router-link>
+        <p class="navMargin moblieNot" @click="showOrder = !showOrder">購物車</p>
+        <img id='memImg' :src="memberInfo.memImage" height="40px" width="40px" style="margin-right:3px; border-radius:50%">
+        <p class="navMargin" @click="loginOut">{{memberInfo.memName}}</p>
+      </div>
+    </div>
+    <div class="moblieNav">
+        <!-- <div style="display:flex; align-items: center; margin-right:15px;"> -->
+          <div>
+            <router-link class="navMargin" to='/product'>產品</router-link>
+          </div>
+          <div>
+            <router-link class="navMargin" to='/historyorder'>歷史訂單</router-link>
+          </div>
+          <div>
+            <p class="navMargin" @click="showOrder = !showOrder">購物車</p>
+          </div>
+        <!-- </div> -->
     </div>
     <router-view/>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import { mapState, mapMutations } from 'vuex'
+// import axios from 'axios'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import router from './router'
 import cookies from 'vue-cookies'
 export default {
@@ -33,13 +58,19 @@ export default {
     ...mapState([
       'memberInfo',
       'shopCart',
-      'setProduct'
+      'setProduct',
+      'detailShopChart'
     ])
   },
   methods: {
     ...mapMutations([
       'MEMBER_STATUS',
-      'SET_PRODUCT'
+      'SET_PRODUCT',
+      'SHOP_CART'
+    ]),
+    ...mapActions([
+      'getSetProduct',
+      'getShopCart'
     ]),
     loginOut () {
       cookies.remove('memberInfo')
@@ -47,17 +78,6 @@ export default {
       router.push({
         path: '/'
       }).catch(() => {})
-    },
-    shopCartData () {
-      const array = []
-      this.shopCart.forEach(x => {
-        const obj = this.setProduct.data.find(y => y.setId === x.cartSetId)
-        array.push(obj)
-      })
-      this.shopCartNameArray = array
-      console.log(this.shopCart)
-      console.log(this.setProduct.data)
-      console.log(this.shopCartNameArray)
     }
   },
   async mounted () {
@@ -65,18 +85,19 @@ export default {
       const memberInfo = cookies.get('memberInfo')
       this.MEMBER_STATUS(memberInfo)
     }
-    this.SET_PRODUCT(await axios.post('/getSetProduct'))
-    this.shopCartData()
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 700;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
   color: #2c3e50;
+  background: rgba(176, 224, 149, 0.411);
+  min-height: 100vh;
 }
 
 #nav {
@@ -85,33 +106,90 @@ export default {
   width: 100%;
   display: flex;
   padding: 5px;
-  background: #2c3e50;
+  background: #4c5849;
   justify-content: flex-end;
   align-items: center;
+  .logo{
+    // justify-self: flex-start !important;
+    // text-align: start;
+    color: aliceblue !important;
+    text-decoration:none;
+    font-size: 22px;
+    margin-right: auto;
+    margin-left: 20px;
+  }
 }
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #503d2c;
 }
 #nav p {
   margin: 0px;
   padding: 0px;
   color: aliceblue;
+  font-weight: 700;
+}
+.moblieNav {
+  height: 50px;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  display: none;
+  bottom: 0px;
+  background: #4c5849;
+  justify-content: center;
+  align-items: center;
+  div {
+    width: 100%;
+    // height: 100%;
+    align-items: center;
+    text-align: center;
+    border: 2px solid aquamarine;
+  }
+  .navMargin {
+    margin: auto 25px !important;
+
+    // border: ;
+  }
 }
 .navMargin {
-  margin: 0px 10px !important;
+  // margin: 0px 10px !important;
+  color: aliceblue !important;
+  text-decoration:none;
+  margin-right: 15px !important;
+  cursor: pointer;
 }
 .orderBox {
   position: fixed;
   top: 50px;
   right:0px;
   width: 350px;
-  height: 100%;
-  background: green;
-  opacity: 0.7;
+  height: calc(100% - 50px);
+  // min-height: 100%;
+  background: rgb(109, 197, 109);
+  opacity: 0.9;
+  overflow-y: auto;
+  .shopChartFlexBox{
+    display: flex;
+    justify-content: center;
+    background: cornsilk;
+    margin: 15px;
+    border: 2px solid springgreen;
+  }
+  .shopChartText{
+    margin-left: 15px;
+  }
 }
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+@media only screen and (max-width:420px) {
+  .moblieNav {
+    display: flex !important;
+  }
+  .moblieNot {
+    display: none !important;
+  }
 }
 </style>

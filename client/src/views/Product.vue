@@ -11,35 +11,38 @@
             <h3 style="margin:0">{{i.setName}}</h3>
             <img :src="i.setImage" style="width:200px; height:180px">
             <h3>$ {{i.setPrice}}</h3>
-            <div>數量: <input name="setHowMany" :value="0" type="number"></div>
+            <div>數量: <input type='number' name="setHowMany" :value="0" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')"></div>
             <div style="margin-top:10px">
               <button @click="insertShopCart(i.setId, idx)">加入購物車</button>
             </div>
           </div>
         </div>
         <div>
-            <button @click="formOpen = !formOpen" style="margin-top:40%">上架便當</button>
+            <button @click="formOpen = true" style="margin-top:40%">上架便當</button>
         </div>
       </div>
         <div class="upDateForm" v-if="formOpen">
+          <div style="text-align:end">
+            <button @click="formOpen = false" style="margin-right:2px; margin-top:2px; background:red">X</button>
+          </div>
           <div class="formStyle">
-            <h2>上架</h2>
+            <!-- <h2>上架</h2> -->
             <form id='myForm' enctype="multipart/form-data">
               <div class="formDiv">
-                <label for="bangTonName">bangTonName:</label>
+                <label for="bangTonName">便當名稱:</label>
                 <input type="text" name="bangTonName" id="bangTonName">
               </div>
               <div class="formDiv">
-                <label for="bangTonPrice">bangTonPrice:</label>
+                <label for="bangTonPrice">便當價格:</label>
                 <input type="text" name="bangTonPrice" id="bangTonPrice">
               </div>
               <div class="formDiv">
-                <label for="imgFile">uploadfile:</label>
+                <!-- <label for="imgFile">上傳圖片:</label> -->
                 <input id="imgFile" name="imgFile" type='file'  accept="image/*" @change="loadImgFile">
               </div>
             </form>
-            <img id='upImg' width="150px" height="150px" style="border: 5px solid #555;">
-            <div>
+            <img id='upImg' width="200px" height="180px" style="border: 2px solid #555;">
+            <div style="margin:10px">
               <button @click="upLoadForm">上架</button>
             </div>
           </div>
@@ -49,7 +52,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import axios from 'axios'
 import router from '../router'
 import cookies from 'vue-cookies'
@@ -77,6 +80,10 @@ export default {
     ...mapMutations([
       'SHOP_CART'
     ]),
+    ...mapActions([
+      'getSetProduct',
+      'getShopCart'
+    ]),
     async insertShopCart (id, idx) {
       const num = document.getElementsByName('setHowMany')[idx].value
       const setId = id
@@ -103,10 +110,6 @@ export default {
         }
       }
     },
-    async getShopCart () {
-      const shopCart = await axios.post('/getShopCart')
-      this.SHOP_CART(shopCart.data)
-    },
     loadImgFile (event) {
       for (let i = 0; i < event.target.files.length; i++) {
         const reader = new FileReader()
@@ -124,8 +127,9 @@ export default {
       const myForm = document.getElementById('myForm')
       const formData = new FormData(myForm)
       const upDate = await axios.post('/upload', formData)
+      console.log(upDate)
       if (upDate.data.code === 200) {
-        this.setProduct = await axios.post('/getSetProduct')
+        this.getSetProduct()
       }
       this.formOpen = false
     },
@@ -147,13 +151,10 @@ export default {
         path: '/'
       }).catch(() => {})
     }
-    // this.setProduct = await axios.post('/getSetProduct')
-    this.getMemberOrder()
-    this.getShopCart()
-    // this.singleProduct = await axios.post('/getSingleProduct')
-    // this.otherProduct = await axios.post('/getOtherProduct')
-    // console.log(this.setProduct)
-    // console.log(joinTest)
+    if (!this.setProduct.data) {
+      this.getSetProduct()
+      this.getShopCart()
+    }
   }
 }
 </script>
@@ -173,12 +174,13 @@ export default {
     justify-content: start;
     text-align: center;
     .borderBox{
-      border: 2px solid rgb(214, 152, 38);
+      border: 2px solid #61775b;
       max-width: 220px;
       margin: 0 auto;
       border-radius: 5px;
       padding: 5px;
-      box-shadow: 2px 2px 2px rgb(214, 152, 38);
+      // box-shadow: 2px 2px 2px rgb(214, 152, 38);
+      box-shadow: 2px 2px 2px #61775b;
     }
     h3 {
       margin: 0;
@@ -208,12 +210,14 @@ export default {
     }
   }
   .upDateForm{
+    border: 2px solid rgb(124, 96, 58);
     position: fixed;
     width: 350px;
     top:50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: #ade99f;
+    border-radius: 15px;
     .formStyle{
       text-align: center;
       .formDiv {
@@ -225,7 +229,8 @@ export default {
       }
       input {
         margin-top: 5px;
-        width: 100%;
+        margin-left: 5px;
+        // width: 100%;
         text-align: center !important;
       }
     }
