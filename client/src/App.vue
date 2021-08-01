@@ -23,7 +23,7 @@
         <p class="navMargin" @click="loginOut">{{memberInfo.memName}}</p>
       </div>
     </div>
-    <div class="moblieNav">
+    <div class="moblieNav" v-if="memberInfo">
         <!-- <div style="display:flex; align-items: center; margin-right:15px;"> -->
           <div>
             <router-link class="navMargin" to='/product'>產品</router-link>

@@ -42,7 +42,7 @@
               </div>
             </form>
             <img id='upImg' width="200px" height="180px" style="border: 2px solid #555;">
-            <div style="margin:10px">
+            <div style="margin:10px;">
               <button @click="upLoadForm">上架</button>
             </div>
           </div>
@@ -193,6 +193,7 @@ export default {
     /* margin: 10px; */
     min-width: 220px;
     // width: 25%;
+    min-height: 326.4px;
     width: 20%;
     margin: 15px 0px;
     // border: 2px solid rgb(126, 161, 194);
