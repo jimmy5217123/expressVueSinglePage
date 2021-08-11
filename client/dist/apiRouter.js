@@ -49,11 +49,10 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
       connection.query(`INSERT INTO set_product VALUES (0,'${body.bangTonName}',130,800,21,96,0,'${url}','寶島食堂嚴選冰島鱈魚，無細刺，肉質滑嫩鮮甜，如雪花般入口即化的綿密感魚肉更富含OMEGA-3即DHA、EPA適合成長中的孩子食用。',1)`, (err, rows) => {
         connection.release() // return the connection to pool
         if(err) throw err
-        // res.json(rows)
+        res.json({
+          code : 200
+        })
       })
-    })
-    res.json({
-      code : 200
     })
   })
   
