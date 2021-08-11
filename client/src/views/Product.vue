@@ -99,7 +99,7 @@ export default {
           this.getShopCart()
         }
       } else {
-        const insertShop = await axios.post('/insertCart',
+        const insertShop = await axios.post('api/insertCart',
           {
             setId,
             num,
@@ -126,7 +126,7 @@ export default {
     async upLoadForm () {
       const myForm = document.getElementById('myForm')
       const formData = new FormData(myForm)
-      const upDate = await axios.post('/upload', formData)
+      const upDate = await axios.post('api/upload', formData)
       console.log(upDate)
       if (upDate.data.code === 200) {
         this.getSetProduct()
@@ -134,7 +134,7 @@ export default {
       this.formOpen = false
     },
     async getMemberOrder () {
-      const memSetOrder = await axios.post('/getMemOrder')
+      const memSetOrder = await axios.post('api/getMemOrder')
       if (memSetOrder.data) {
         const array = []
         memSetOrder.data.forEach(x => {

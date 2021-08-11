@@ -29,7 +29,7 @@ export default new Vuex.Store({
   },
   actions: {
     async memlogin ({ state }, account) {
-      const member = await axios.post('/login',
+      const member = await axios.post('api/login',
         {
           account: account.account,
           password: account.password
@@ -46,15 +46,15 @@ export default new Vuex.Store({
       }
     },
     async getSetProduct ({ commit }) {
-      const setProduct = await axios.post('/getSetProduct')
+      const setProduct = await axios.post('api/getSetProduct')
       commit('SET_PRODUCT', setProduct)
     },
     async getShopCart ({ state, commit }) {
-      const shopCart = await axios.post('/getShopCart', {
+      const shopCart = await axios.post('api/getShopCart', {
         memId: state.memberInfo.memId
       })
       commit('SHOP_CART', shopCart.data)
-      const detailShopChart = await axios.post('/getdetailShopChart', {
+      const detailShopChart = await axios.post('api/getdetailShopChart', {
         memId: state.memberInfo.memId
       })
       commit('DETAIL_SHOP_CHART', detailShopChart.data)
