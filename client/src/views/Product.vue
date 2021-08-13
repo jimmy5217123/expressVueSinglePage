@@ -201,7 +201,7 @@ export default {
     // width: 25%;
     min-height: 326.4px;
     width: 20%;
-    margin: 15px 0px;
+    margin: 15px 2%;
     // border: 2px solid rgb(126, 161, 194);
     box-sizing: border-box;
   }
