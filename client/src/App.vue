@@ -90,13 +90,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  // font-family: Avenir, Helvetica, Arial, sans-serif
+  font-family: '微軟正黑體', Times, serif;
   font-weight: 700;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
   color: #2c3e50;
-  background: rgba(176, 224, 149, 0.411);
+  background: rgba(195, 238, 255, 0.15);
   min-height: 100vh;
 }
 

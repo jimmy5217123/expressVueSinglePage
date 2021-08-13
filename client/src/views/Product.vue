@@ -180,13 +180,14 @@ export default {
     justify-content: start;
     text-align: center;
     .borderBox{
-      border: 2px solid #61775b;
+      // border: 2px solid #61775b;
       max-width: 220px;
       margin: 0 auto;
       border-radius: 5px;
       padding: 5px;
       // box-shadow: 2px 2px 2px rgb(214, 152, 38);
-      box-shadow: 2px 2px 2px #61775b;
+      background: rgba(88, 219, 169, 0.5);
+      box-shadow: 2px 2px 5px #4f5f46;
     }
     h3 {
       margin: 0;
@@ -243,15 +244,17 @@ export default {
     }
   }
   button {
-    background-color: #4CAF50; /* Green */
+    background-color: #9bb976; /* Green */
     border: none;
     color: white;
     padding: 5px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    font-size: 14px;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: 700;
     &:hover{
       background: red;
     }
