@@ -32,12 +32,12 @@ const upload = multer({storage: storage})
 
 router.post('/getSetProduct', (req, res) => {
     pool.getConnection((err, connection) => {
-        if(err) throw err;
-        connection.query('SELECT * FROM set_product', (err, rows) => {
+      if(err) throw err
+      connection.query('SELECT * FROM set_product', (err, rows) => {
         connection.release() // return the connection to pool
         if(err) throw err
         res.json(rows)
-        })
+      })
     })
 })
 
@@ -45,7 +45,7 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
     const body = req.body
     const url = './images/bandon_include/'+ req.file.filename
     pool.getConnection((err, connection) => {
-      if(err) throw err;
+      if(err) throw err
       connection.query(`INSERT INTO set_product VALUES (0,'${body.bangTonName}',130,800,21,96,0,'${url}','寶島食堂嚴選冰島鱈魚，無細刺，肉質滑嫩鮮甜，如雪花般入口即化的綿密感魚肉更富含OMEGA-3即DHA、EPA適合成長中的孩子食用。',1)`, (err, rows) => {
         connection.release() // return the connection to pool
         if(err) throw err
@@ -58,7 +58,7 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
   
   router.post('/getSetProduct', (req, res) => {
     pool.getConnection((err, connection) => {
-      if(err) throw err;
+      if(err) throw err
       connection.query('SELECT * FROM set_product', (err, rows) => {
         connection.release() // return the connection to pool
         if(err) throw err
@@ -69,10 +69,10 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
   
   router.post('/getSingleProduct', (req, res) => {
     pool.getConnection((err, connection) => {
-      if(err) throw err;
+      if(err) throw err
       connection.query(`SELECT * FROM single_product`, (err, rows) => {
-          connection.release(); // return the connection to pool
-          if(err) throw err;
+          connection.release() // return the connection to pool
+          if(err) throw err
           res.json(rows)
       })
     })
@@ -80,10 +80,10 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
   
   router.post('/getOtherProduct', (req, res) => {
     pool.getConnection((err, connection) => {
-      if(err) throw err;
+      if(err) throw err
       connection.query(`SELECT * FROM other_product`, (err, rows) => {
-        connection.release(); // return the connection to pool
-        if(err) throw err;
+        connection.release() // return the connection to pool
+        if(err) throw err
         res.json(rows)
       })
     })
@@ -91,11 +91,10 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
   
   router.post('/getShopCart', (req, res) => {
     pool.getConnection((err, connection) => {
-      if(err) throw err;
-      // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+      if(err) throw err
       connection.query(`SELECT * FROM shopping_cart WHERE cartBelonger = '${req.body.memId}';`, (err, rows) => {
-        connection.release(); // return the connection to pool
-        if(err) throw err;
+        connection.release() // return the connection to pool
+        if(err) throw err
         if (rows) {
           res.json(rows)
         } else {
@@ -107,11 +106,10 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
   
   router.post('/getdetailShopChart', (req, res) => {
     pool.getConnection((err, connection) => {
-      if(err) throw err;
-      // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+      if(err) throw err
       connection.query(`SELECT * FROM shopping_cart INNER JOIN set_product ON  setId = cartSetId WHERE cartBelonger = '${req.body.memId}';`, (err, rows) => {
-        connection.release(); // return the connection to pool
-        if(err) throw err;
+        connection.release() // return the connection to pool
+        if(err) throw err
         if (rows) {
           res.json(rows)
         } else {
@@ -123,11 +121,10 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
   
   router.post('/insertCart', (req, res) => {
     pool.getConnection((err, connection) => {
-      if(err) throw err;
-      // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+      if(err) throw err
       connection.query(`INSERT INTO shopping_cart VALUES (0, ${req.body.setId}, ${req.body.num}, ${req.body.memId})`, (err) => {
-        connection.release(); // return the connection to pool
-        if(err) throw err;
+        connection.release() // return the connection to pool
+        if(err) throw err
         res.json({
           code : 200
         })
@@ -137,11 +134,10 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
   
   router.post('/updateCart', (req, res) => {
     pool.getConnection((err, connection) => {
-      if(err) throw err;
-      // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+      if(err) throw err
       connection.query(`UPDATE  shopping_cart SET carSetAmount = '${req.body.num}' WHERE cartBelonger = '${req.body.memId}' AND cartSetId = '${req.body.setId}'`, (err) => {
-        connection.release(); // return the connection to pool
-        if(err) throw err;
+        connection.release() // return the connection to pool
+        if(err) throw err
         res.json({
           code : 200
         })
@@ -151,10 +147,9 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
   
   router.post('/getMemOrder', (req, res) => {
     pool.getConnection((err, connection) => {
-      if(err) throw err;
-      // connection.query(`SELECT * FROM member INNER JOIN set_order ON set_order.setoBelongOrder = member.memId WHERE memId = '1000';`, (err, rows) => {
+      if(err) throw err
       connection.query(`SELECT * FROM set_order WHERE setoBelongOrder = '1000';`, (err, rows) => {
-        connection.release(); // return the connection to pool
+        connection.release() // return the connection to pool
         if(err) throw err;
         res.json(rows)
       })
@@ -163,7 +158,7 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
   
   router.post('/login', (req, res) => {
     pool.getConnection((err, connection) => {
-      if(err) throw err;
+      if(err) throw err
       connection.query(`SELECT * FROM member WHERE memEmail = '${req.body.account}' AND memPsw = '${req.body.password}';`, (err, rows) => {
         connection.release() // return the connection to pool
         if(err) throw err
