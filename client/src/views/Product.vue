@@ -84,6 +84,11 @@ export default {
       'getSetProduct',
       'getShopCart'
     ]),
+    sleep (ms) {
+      return new Promise((resolve) => {
+        setTimeout(resolve, ms)
+      })
+    },
     async insertShopCart (id, idx) {
       const num = document.getElementsByName('setHowMany')[idx].value
       const setId = id
@@ -129,6 +134,7 @@ export default {
       const upDate = await axios.post('api/upload', formData)
       console.log(upDate)
       if (upDate.data.code === 200) {
+        await this.sleep(300)
         this.getSetProduct()
       }
       this.formOpen = false
