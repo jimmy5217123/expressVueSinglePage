@@ -1,5 +1,16 @@
+const baseUrl = process.env.NODE_ENV === 'production' ? '' : '/'
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'production'
-      ? ''
-      : '/'
+    publicPath: baseUrl,
+    devServer: {
+      proxy: {
+        '/api': {
+          target: baseUrl + 'api/',
+          ws: true,
+          changeOrigin: true,
+          pathRewrite: {
+            '^/api': ''
+          }
+        }
+      }
+    }
   }

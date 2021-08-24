@@ -19,7 +19,11 @@ app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './index.html'))
 })
 
-console.log(path.resolve(__dirname))
+// app.get(`/api/test`, (req, res) => [
+//   res.json({
+//     aaa: 'sss'
+//   })
+// ])
 // Assuming that 'path/file.txt' is a regular file.
 // fs.unlink('aaa.txt', (err) => {
 //   if (err) throw err;

@@ -21,14 +21,20 @@ const pool = mysql.createPool({
 
 const storage = multer.diskStorage ({
     destination: function (req, file, cb) {
-        cb(null, './dist/images/bandon_include')
-        cb(null, './public/images/bandon_include')
+      cb(null, './dist/images/bandon_include')
+      cb(null, './public/images/bandon_include')
     },
-        filename: function (req, file, cb){
-        cb(null, file.originalname)
+      filename: function (req, file, cb){
+      cb(null, file.originalname)
     }
 })
 const upload = multer({storage: storage})
+
+router.get('/aa', (req, res) => {
+  res.json({
+    aaa: 'sss'
+  })
+})
 
 router.post('/getSetProduct', (req, res) => {
     pool.getConnection((err, connection) => {
@@ -56,38 +62,38 @@ router.post('/upload', upload.single('imgFile'), function (req, res, next) {
     })
   })
   
-  router.post('/getSetProduct', (req, res) => {
-    pool.getConnection((err, connection) => {
-      if(err) throw err
-      connection.query('SELECT * FROM set_product', (err, rows) => {
-        connection.release() // return the connection to pool
-        if(err) throw err
-        res.json(rows)
-      })
-    })
-  })
+  // router.post('/getSetProduct', (req, res) => {
+  //   pool.getConnection((err, connection) => {
+  //     if(err) throw err
+  //     connection.query('SELECT * FROM set_product', (err, rows) => {
+  //       connection.release() // return the connection to pool
+  //       if(err) throw err
+  //       res.json(rows)
+  //     })
+  //   })
+  // })
   
-  router.post('/getSingleProduct', (req, res) => {
-    pool.getConnection((err, connection) => {
-      if(err) throw err
-      connection.query(`SELECT * FROM single_product`, (err, rows) => {
-          connection.release() // return the connection to pool
-          if(err) throw err
-          res.json(rows)
-      })
-    })
-  })
+  // router.post('/getSingleProduct', (req, res) => {
+  //   pool.getConnection((err, connection) => {
+  //     if(err) throw err
+  //     connection.query(`SELECT * FROM single_product`, (err, rows) => {
+  //         connection.release() // return the connection to pool
+  //         if(err) throw err
+  //         res.json(rows)
+  //     })
+  //   })
+  // })
   
-  router.post('/getOtherProduct', (req, res) => {
-    pool.getConnection((err, connection) => {
-      if(err) throw err
-      connection.query(`SELECT * FROM other_product`, (err, rows) => {
-        connection.release() // return the connection to pool
-        if(err) throw err
-        res.json(rows)
-      })
-    })
-  })
+  // router.post('/getOtherProduct', (req, res) => {
+  //   pool.getConnection((err, connection) => {
+  //     if(err) throw err
+  //     connection.query(`SELECT * FROM other_product`, (err, rows) => {
+  //       connection.release() // return the connection to pool
+  //       if(err) throw err
+  //       res.json(rows)
+  //     })
+  //   })
+  // })
   
   router.post('/getShopCart', (req, res) => {
     pool.getConnection((err, connection) => {

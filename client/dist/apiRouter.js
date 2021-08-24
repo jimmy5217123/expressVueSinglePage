@@ -21,14 +21,20 @@ const pool = mysql.createPool({
 
 const storage = multer.diskStorage ({
     destination: function (req, file, cb) {
-        cb(null, './dist/images/bandon_include')
-        cb(null, './public/images/bandon_include')
+      cb(null, './dist/images/bandon_include')
+      cb(null, './public/images/bandon_include')
     },
-        filename: function (req, file, cb){
-        cb(null, file.originalname)
+      filename: function (req, file, cb){
+      cb(null, file.originalname)
     }
 })
 const upload = multer({storage: storage})
+
+router.get('/aa', (req, res) => {
+  res.json({
+    aaa: 'sss'
+  })
+})
 
 router.post('/getSetProduct', (req, res) => {
     pool.getConnection((err, connection) => {
