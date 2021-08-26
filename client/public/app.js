@@ -6,7 +6,8 @@ const fs = require('fs')
 
 const port = process.env.PORT || 4000
 
-const apiRouter = require('./apiRouter')
+// const apiRouter = require('./apiRouter')
+const apiRouter = require('./apiRouter/index.routes')
 app.use('/api', apiRouter)
 
 app.use(express.urlencoded({
@@ -18,17 +19,6 @@ app.use(express.static('./public'))
 app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './index.html'))
 })
-
-// app.get(`/api/test`, (req, res) => [
-//   res.json({
-//     aaa: 'sss'
-//   })
-// ])
-// Assuming that 'path/file.txt' is a regular file.
-// fs.unlink('aaa.txt', (err) => {
-//   if (err) throw err;
-//   console.log('path/file.txt was deleted');
-// });
 
 app.listen(port, () => {
   console.log(`listening at http://localhost:${port}`)

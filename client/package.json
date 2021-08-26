@@ -10,7 +10,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "watch": "vue-cli-service build --watch",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "wstart": "node dist/app.js --watch"
   },
   "dependencies": {
     "axios": "^0.21.1",
