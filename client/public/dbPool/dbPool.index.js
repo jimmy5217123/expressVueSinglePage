@@ -86,7 +86,7 @@ module.exports = {
       })
     })
   },
-  async updateCart (num, memId) {
+  async updateCart (num, memId, setId) {
     return new Promise(( resolve, reject ) => {
       pool.getConnection((err, connection) => {
         if(err) throw err

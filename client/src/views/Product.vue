@@ -94,7 +94,7 @@ export default {
       const setId = id
       if (this.shopCart.find(x => x.cartSetId === setId)) {
         const dataBaseNum = this.shopCart.find(x => x.cartSetId === setId)
-        const updateShop = await axios.post('/updateCart',
+        const updateShop = await axios.post('api/updateCart',
           {
             setId,
             num: Number(num) + Number(dataBaseNum.carSetAmount),
