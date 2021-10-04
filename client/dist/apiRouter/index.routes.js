@@ -3,6 +3,7 @@ const router = express.Router()
 const { getSetProduct, upload, getShopCart, getdetailShopChart, insertCart, updateCart, login } = require('../apiController/index.controller')
 router.use(express.json())
 const multer = require('multer')
+const authenticateToken = require('../middlewares/authenticateToken')
 
 const storage = multer.diskStorage ({
   destination: function (req, file, cb) {
@@ -15,7 +16,7 @@ const storage = multer.diskStorage ({
 })
 const uploadData = multer({storage: storage})
 
-router.post('/getSetProduct', getSetProduct)
+router.post('/getSetProduct', authenticateToken, getSetProduct)
 router.post('/upload', uploadData.single('imgFile'), upload)
 router.post('/getShopCart', getShopCart)
 router.post('/getdetailShopChart', getdetailShopChart)
