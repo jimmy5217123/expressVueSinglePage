@@ -93,22 +93,30 @@ export default {
       const num = document.getElementsByName('setHowMany')[idx].value
       const setId = id
       if (this.shopCart.find(x => x.cartSetId === setId)) {
+        const token = cookies.get('testToken')
         const dataBaseNum = this.shopCart.find(x => x.cartSetId === setId)
         const updateShop = await axios.post('api/updateCart',
           {
             setId,
             num: Number(num) + Number(dataBaseNum.carSetAmount),
             memId: this.memberInfo.memId
+          },
+          {
+            headers: { authorization: `bearer ${token}` }
           })
         if (updateShop.data.code === 200) {
           this.getShopCart()
         }
       } else {
+        const token = cookies.get('testToken')
         const insertShop = await axios.post('api/insertCart',
           {
             setId,
             num,
             memId: this.memberInfo.memId
+          },
+          {
+            headers: { authorization: `bearer ${token}` }
           })
         if (insertShop.data.code === 200) {
           this.getShopCart()
@@ -129,9 +137,12 @@ export default {
       }
     },
     async upLoadForm () {
+      const token = cookies.get('testToken')
       const myForm = document.getElementById('myForm')
       const formData = new FormData(myForm)
-      const upDate = await axios.post('api/upload', formData)
+      const upDate = await axios.post('api/upload', formData, {
+        headers: { authorization: `bearer ${token}` }
+      })
       console.log(upDate)
       if (upDate.data.code === 200) {
         await this.sleep(300)

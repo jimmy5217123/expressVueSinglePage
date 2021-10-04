@@ -17,11 +17,11 @@ const storage = multer.diskStorage ({
 const uploadData = multer({storage: storage})
 
 router.post('/getSetProduct', authenticateToken, getSetProduct)
-router.post('/upload', uploadData.single('imgFile'), upload)
-router.post('/getShopCart', getShopCart)
-router.post('/getdetailShopChart', getdetailShopChart)
-router.post('/insertCart', insertCart)
-router.post('/updateCart', updateCart)
+router.post('/upload', authenticateToken, uploadData.single('imgFile'), upload)
+router.post('/getShopCart', authenticateToken, getShopCart)
+router.post('/getdetailShopChart', authenticateToken, getdetailShopChart)
+router.post('/insertCart', authenticateToken, insertCart)
+router.post('/updateCart', authenticateToken, updateCart)
 router.post('/login', login)
 
 module.exports = router
