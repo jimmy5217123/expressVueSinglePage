@@ -1,7 +1,7 @@
+require('dotenv').config()
 const router = require('../apiRouter/index.routes')
 const dbPool = require('../dbPool/dbPool.index')
 const jwt = require('jsonwebtoken')
-const test = '401d23f45f3e485cf8f963b6fd921a66acfb58bcabd941c92e7272a14375e1c5ef701bdcea7692cce8ec752c71289c2311cb3b7d2752dbc57d90b550c925d1a3'
 
 module.exports = {
   async getSetProduct (req, res) {
@@ -41,7 +41,7 @@ module.exports = {
       const user = {
         account: req.body.account
       }
-      const accessToken = jwt.sign(user, test, { expiresIn: '8h' })
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '8h' })
       res.cookie('testToken', accessToken)
       res.json(data)
     }
