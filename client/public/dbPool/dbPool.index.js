@@ -1,16 +1,18 @@
+require('dotenv').config()
 const mysql = require('mysql')
 
 const pool = mysql.createPool({
-    host     : '127.0.0.1',
-    user     : 'root',
-    password : 'may1234567',
-    database: 'product'
-  })
+  host     : '127.0.0.1',
+  user     : 'root',
+  password : 'may1234567',
+  database: 'product'
+})
+
 // const pool = mysql.createPool({
-//   host     : 'us-cdbr-east-04.cleardb.com',
-//   user     : 'b7cc7e172f5d6d',
-//   password : '70b0d6cd',
-//   database: 'heroku_94648fbef613f3b'
+//   host     : process.env.herokuMySqlHost,
+//   user     : process.env.herokuMySqlUser,
+//   password : process.env.herokuMySqlPassword,
+//   database: process.env.herokuMySqlDatabase
 // })
 
 module.exports = {
