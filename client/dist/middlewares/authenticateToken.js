@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
     } else {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
             if (err) {
-                console.log(err)
+                res.sendStatus(401)
             } else {
                 next()
             }
