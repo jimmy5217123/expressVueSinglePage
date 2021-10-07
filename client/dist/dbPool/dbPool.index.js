@@ -62,7 +62,7 @@ module.exports = {
     return new Promise(( resolve, reject ) => {
       pool.getConnection((err, connection) => {
         if(err) throw err
-        connection.query(`SELECT * FROM set_order INNER JOIN set_product ON  setId = setoId WHERE setoBelongOrder = '${memId}';`, (err, rows) => {
+        connection.query(`SELECT * FROM (new_order INNER JOIN set_order ON  orderId = setoBelongOrder) INNER JOIN set_product ON setOId = setId WHERE orderer = '${memId}';`, (err, rows) => {
           connection.release() // return the connection to pool
           if(err) throw err
           if (rows) {
