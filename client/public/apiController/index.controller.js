@@ -24,6 +24,11 @@ module.exports = {
     const data = await dbPool.getdetailShopChart(body.memId)
     res.json(data)
   },
+  async getHistoryOrder (req, res) {
+    const body = req.body
+    const data = await dbPool.getHistoryOrder(body.memId)
+    res.json(data)
+  },
   async insertCart (req, res) {
     const body = req.body
     const data = await dbPool.insertCart(body.setId, body.num, body.memId)

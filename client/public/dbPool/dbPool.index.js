@@ -42,13 +42,13 @@ module.exports = {
       })
     })
   },
-  async getShopCart (memId) {
+  async getdetailShopChart (memId) {
     return new Promise(( resolve, reject ) => {
       pool.getConnection((err, connection) => {
         if(err) throw err
-        connection.query(`SELECT * FROM shopping_cart WHERE cartBelonger = '${memId}';`, (err, rows) => {
-          connection.release()
-          if(err) throw reject(err)
+        connection.query(`SELECT * FROM shopping_cart INNER JOIN set_product ON  setId = cartSetId WHERE cartBelonger = '${memId}';`, (err, rows) => {
+          connection.release() // return the connection to pool
+          if(err) throw err
           if (rows) {
             resolve(rows)
           } else {
@@ -58,11 +58,11 @@ module.exports = {
       })
     })
   },
-  async getdetailShopChart (memId) {
+  async getHistoryOrder (memId) {
     return new Promise(( resolve, reject ) => {
       pool.getConnection((err, connection) => {
         if(err) throw err
-        connection.query(`SELECT * FROM shopping_cart INNER JOIN set_product ON  setId = cartSetId WHERE cartBelonger = '${memId}';`, (err, rows) => {
+        connection.query(`SELECT * FROM set_order INNER JOIN set_product ON  setId = setoId WHERE setoBelongOrder = '${memId}';`, (err, rows) => {
           connection.release() // return the connection to pool
           if(err) throw err
           if (rows) {
