@@ -27,7 +27,15 @@ module.exports = {
   async getHistoryOrder (req, res) {
     const body = req.body
     const data = await dbPool.getHistoryOrder(body.memId)
-    res.json(data)
+    const idArr = []
+    const resArr = []
+    data.forEach(x => {
+      if (!idArr.includes(x.orderId)) idArr.push(x.orderId)
+    })
+    idArr.forEach((x, idx) => {
+      resArr[idx] = data.filter(y => y.orderId === x)
+    })
+    res.json(resArr)
   },
   async insertCart (req, res) {
     const body = req.body
