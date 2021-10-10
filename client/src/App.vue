@@ -14,7 +14,9 @@
     </div>
     <div style="height:50px"></div>
     <div id="nav" v-if="memberInfo">
-      <router-link class="logo" to='/product'>BangTon</router-link>
+      <router-link class="logo" to='/product'>
+        <div style="display:flex; align-items:center"><img :src='logo' width="40px;" style="margin-right:5px">BangTon</div>
+      </router-link>
       <div style="display:flex; align-items: center; margin-right:15px">
         <router-link class="navMargin moblieNot" to='/product'>產品</router-link>
         <router-link class="navMargin moblieNot" to='/historyorder'>歷史訂單</router-link>
@@ -45,11 +47,13 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import router from './router'
 import cookies from 'vue-cookies'
+import logo from '../dist/images/bandon_include/setdo1.jpg'
 export default {
   components: {
   },
   data () {
     return {
+      logo,
       showOrder: false,
       shopCartNameArray: []
     }
@@ -107,9 +111,11 @@ export default {
   width: 100%;
   display: flex;
   padding: 5px;
-  background: #4c5849;
+  // background: #4c5849;
+  background: #BAAD87;
   justify-content: flex-end;
   align-items: center;
+  border-bottom: 2px solid black;
   .logo{
     // justify-self: flex-start !important;
     // text-align: start;
