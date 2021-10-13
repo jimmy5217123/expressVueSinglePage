@@ -38,6 +38,11 @@ module.exports = {
     })
     res.json(resArr)
   },
+  async insertOrder(req, res) {
+    const body = req.body
+    const data = await dbPool.insertOrder(body.orderer, body.orderTotalPrice, body.orderTime, body.orderRemark)
+    res.json(data)
+  },
   async insertCart (req, res) {
     const body = req.body
     const data = await dbPool.insertCart(body.setId, body.num, body.memId)
