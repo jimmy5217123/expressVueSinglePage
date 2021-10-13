@@ -95,7 +95,7 @@ export default {
       if (this.shopCart.find(x => x.cartSetId === setId)) {
         const token = cookies.get('testToken')
         const dataBaseNum = this.shopCart.find(x => x.cartSetId === setId)
-        const updateShop = await axios.post('api/updateCart',
+        const updateShop = await axios.put('api/updateCart',
           {
             setId,
             num: Number(num) + Number(dataBaseNum.carSetAmount),

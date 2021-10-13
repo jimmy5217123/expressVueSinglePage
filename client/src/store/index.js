@@ -47,13 +47,20 @@ export default new Vuex.Store({
     },
     async getSetProduct ({ commit }) {
       const token = cookies.get('testToken')
-      const setProduct = await axios.post('api/getSetProduct', {}, {
+      const setProduct = await axios.get('api/getSetProduct', {
         headers: { authorization: `bearer ${token}` }
       })
       commit('SET_PRODUCT', setProduct)
     },
     async getShopCart ({ state, commit }) {
       const token = cookies.get('testToken')
+      const shopCart = await axios.post('api/getShopCart', {
+        memId: state.memberInfo.memId
+      },
+      {
+        headers: { authorization: `bearer ${token}` }
+      })
+      commit('SHOP_CART', shopCart.data)
       const detailShopChart = await axios.post('api/getdetailShopChart', {
         memId: state.memberInfo.memId
       },

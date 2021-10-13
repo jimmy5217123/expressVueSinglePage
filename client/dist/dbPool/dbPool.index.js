@@ -1,19 +1,19 @@
 require('dotenv').config()
 const mysql = require('mysql')
 
-// const pool = mysql.createPool({
-//   host     : '127.0.0.1',
-//   user     : 'root',
-//   password : 'may1234567',
-//   database: 'product'
-// })
-
 const pool = mysql.createPool({
-  host     : process.env.herokuMySqlHost,
-  user     : process.env.herokuMySqlUser,
-  password : process.env.herokuMySqlPassword,
-  database: process.env.herokuMySqlDatabase
+  host     : '127.0.0.1',
+  user     : 'root',
+  password : 'may1234567',
+  database: 'product'
 })
+
+// const pool = mysql.createPool({
+//   host     : process.env.herokuMySqlHost,
+//   user     : process.env.herokuMySqlUser,
+//   password : process.env.herokuMySqlPassword,
+//   database: process.env.herokuMySqlDatabase
+// })
 
 module.exports = {
   async getSetProduct () {
@@ -38,6 +38,22 @@ module.exports = {
           resolve({
             code : 200
           })
+        })
+      })
+    })
+  },
+  async getShopCart(memId) {
+    return new Promise(( resolve, reject ) => {
+      pool.getConnection((err, connection) => {
+        if(err) throw err
+        connection.query(`SELECT * FROM shopping_cart WHERE cartBelonger = '${memId}';`, (err, rows) => {
+          connection.release() // return the connection to pool
+          if(err) throw err
+          if (rows) {
+            resolve(rows)
+          } else {
+            resolve([])
+          }
         })
       })
     })
