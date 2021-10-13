@@ -7,7 +7,7 @@
       </div>
       <div style="display: flex;flex-wrap: wrap;">
         <div v-for="(i, idx) in setProduct.data" :key="idx" style="width:50%; min-width:350px">
-          <h3>{{i.setName}}</h3>
+          <div class="titleBoder"><h3 style="margin-bottom:0px">{{i.setName}}</h3></div>
           <div style="display:flex">
             <img :src="i.setImage" width="150px;" height="160px">
             <div style="padding:10px">
@@ -21,6 +21,9 @@
               <button @click="insertShopCart(i.setId, idx)">加入購物車</button>
             </div> -->
           </div>
+        </div>
+        <div style="width:50%; min-width:350px; text-align:center;margin-top:20px">
+            <button @click="formOpen = true">上架便當</button>
         </div>
       </div>
       <!-- <div class="flexbox"> //test
@@ -195,6 +198,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .titleBoder {
+    border-left: 2px solid rgb(29, 93, 149);
+    padding-left: 5px;
+  }
   .infoClass {
     max-height: 120px;
     min-height: 100px;
