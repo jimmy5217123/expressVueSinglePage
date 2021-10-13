@@ -28,11 +28,11 @@ module.exports = {
       })
     })
   },
-  async upload (bangTonName, url) {
+  async upload (bangTonName, bangTonPrice, bangTonInfo, url) {
     return new Promise(( resolve, reject ) => {
       pool.getConnection((err, connection) => {
         if(err) throw err
-        connection.query(`INSERT INTO set_product VALUES (0,'${bangTonName}',130,800,21,96,0,'${url}','寶島食堂嚴選冰島鱈魚，無細刺，肉質滑嫩鮮甜，如雪花般入口即化的綿密感魚肉更富含OMEGA-3即DHA、EPA適合成長中的孩子食用。',1)`, (err, rows) => {
+        connection.query(`INSERT INTO set_product VALUES (0,'${bangTonName}',${bangTonPrice},800,21,96,0,'${url}','${bangTonInfo}',1)`, (err, rows) => {
           connection.release()
           if(err) throw reject(err)
           resolve({

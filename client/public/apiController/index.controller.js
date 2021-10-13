@@ -10,8 +10,9 @@ module.exports = {
   },
   async upload (req, res) {
     const body = req.body
-    const url = './images/bandon_include/'+ req.file.filename
-    const uploadData = await dbPool.upload(body.bangTonName, url)
+    const url = './images/bandon_include/' + req.file.filename
+    console.log(req.body)
+    const uploadData = await dbPool.upload(body.bangTonName, body.bangTonPrice, body.bangTonInfo, url)
     res.json(uploadData)
   },
   async getShopCart (req, res) {

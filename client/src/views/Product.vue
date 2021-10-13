@@ -7,7 +7,7 @@
       </div>
       <div style="display: flex;flex-wrap: wrap;">
         <div v-for="(i, idx) in setProduct.data" :key="idx" style="width:50%; min-width:350px">
-          <div class="titleBoder"><h3 style="margin-bottom:0px">{{i.setName}}</h3></div>
+          <div class="titleBoder"><h3 style="margin-bottom:0px">{{i.setName}} ${{i.setPrice}}</h3></div>
           <div style="display:flex">
             <img :src="i.setImage" width="150px;" height="160px">
             <div style="padding:10px">
@@ -55,7 +55,14 @@
               </div>
               <div class="formDiv">
                 <label for="bangTonPrice">便當價格:</label>
-                <input type="text" name="bangTonPrice" id="bangTonPrice">
+                <input type="number" min="1" name="bangTonPrice" id="bangTonPrice">
+              </div>
+              <div class="formDiv">
+                <label for="bangTonInfo">便當資訊:</label>
+                <div>
+                  <textarea id="bangTonInfo" name="bangTonInfo" rows="4" cols="40"></textarea>
+                </div>
+                <!-- <input type="text" name="bangTonInfo" id="bangTonInfo"> -->
               </div>
               <div class="formDiv">
                 <!-- <label for="imgFile">上傳圖片:</label> -->
@@ -260,13 +267,13 @@ export default {
     }
   }
   .upDateForm{
-    border: 2px solid rgb(124, 96, 58);
     position: fixed;
     width: 350px;
     top:50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #ade99f;
+    // background: #ade99f;
+    background: #e5f0d8;
     border-radius: 15px;
     .formStyle{
       text-align: center;
