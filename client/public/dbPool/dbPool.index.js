@@ -116,12 +116,12 @@ module.exports = {
       })
     })
   },
-  async inserSetOrder(setArray) {
+  async inserSetOrder(setArray, insertId) {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) throw err
         for (let i = 0; i < setArray.length; i++) {
-          connection.query(`INSERT INTO set_order VALUES (0, ${setArray[i].setoName}, '${setArray[i].setdoPrice}', '${setArray[i].setoAmount}', '${setArray[i].setoBelongOrder}')`, (err, rows) => {
+          connection.query(`INSERT INTO set_order VALUES (0, ${setArray[i].setoName}, '${setArray[i].setdoPrice}', '${setArray[i].setoAmount}', '${insertId}')`, (err, rows) => {
             // connection.release() // return the connection to pool
             if (err) throw err
           })
