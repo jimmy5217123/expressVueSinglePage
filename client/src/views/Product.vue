@@ -5,7 +5,25 @@
         <!-- <h2>bangTon</h2> -->
         <!-- <button @click="formOpen = !formOpen">上架便當</button> -->
       </div>
-      <div class="flexbox">
+      <div style="display: flex;flex-wrap: wrap;">
+        <div v-for="(i, idx) in setProduct.data" :key="idx" style="width:50%; min-width:350px">
+          <h3>{{i.setName}}</h3>
+          <div style="display:flex">
+            <img :src="i.setImage" width="150px;" height="160px">
+            <div style="padding:10px">
+              <div class="infoClass"><p>{{i.setInfo}}</p></div>
+              <div style="text-align:right; margin-right:15px">
+                <input style="width:30px; margin-right:5px" min="1" type='number' name="setHowMany" :value="1" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')">
+                <button @click="insertShopCart(i.setId, idx)">加入購物車</button>
+              </div>
+            </div>
+            <!-- <div style="margin-top:10px">
+              <button @click="insertShopCart(i.setId, idx)">加入購物車</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <!-- <div class="flexbox"> //test
         <div v-for="(i, idx) in setProduct.data" :key="idx">
           <div class="borderBox">
             <h3 style="margin:0">{{i.setName}}</h3>
@@ -20,7 +38,7 @@
         <div>
             <button @click="formOpen = true" style="margin-top:40%">上架便當</button>
         </div>
-      </div>
+      </div> -->
         <div class="upDateForm" v-if="formOpen">
           <div style="text-align:end">
             <button @click="formOpen = false" style="margin-right:2px; margin-top:2px; background:red">X</button>
@@ -177,6 +195,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .infoClass {
+    max-height: 120px;
+    min-height: 100px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+  }
   .containter{
     // position: relative;
     // width: 95%;
