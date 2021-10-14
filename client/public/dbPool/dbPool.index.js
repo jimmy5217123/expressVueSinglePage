@@ -90,27 +90,15 @@ module.exports = {
       })
     })
   },
-  async insertOrder (orderer, orderTotalPrice, orderTime, orderRemark) {
+  async insertOrder (orderer, orderTotalPrice, orderTime, orderRemark, shopCartArray) {
     return new Promise(( resolve, reject ) => {
       pool.getConnection((err, connection) => {
         if(err) throw err
-        connection.query(`INSERT INTO new_order VALUES (0, ${orderer}, '${orderTotalPrice}', '${orderTime}', '${orderRemark}')`, (err, rows) => {
+        connection.query(`INSERT INTO new_order VALUES (0, ${orderer}, ${orderTotalPrice}, '${orderTime}', '${orderRemark}')`, (err, rows) => {
           connection.release() // return the connection to pool
           if (err) throw err
           if (rows.insertId) {
-            const setArray = [{
-              setoName: 1002,
-              setdoPrice: 300,
-              setoAmount: 3,
-              setoBelongOrder: rows.insertId
-            },
-            {
-              setoName: 1001,
-              setdoPrice: 110,
-              setoAmount: 1,
-              setoBelongOrder: rows.insertId
-            }]
-            resolve(this.inserSetOrder(setArray))
+            resolve(this.inserSetOrder(shopCartArray, rows.insertId))
           }
         })
       })
@@ -121,7 +109,7 @@ module.exports = {
       pool.getConnection((err, connection) => {
         if (err) throw err
         for (let i = 0; i < setArray.length; i++) {
-          connection.query(`INSERT INTO set_order VALUES (0, ${setArray[i].setoName}, '${setArray[i].setdoPrice}', '${setArray[i].setoAmount}', '${insertId}')`, (err, rows) => {
+          connection.query(`INSERT INTO set_order VALUES (0, ${setArray[i].setId}, '${setArray[i].setPrice}', '${setArray[i].carSetAmount}', '${insertId}')`, (err, rows) => {
             // connection.release() // return the connection to pool
             if (err) throw err
           })

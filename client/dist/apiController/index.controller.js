@@ -40,7 +40,7 @@ module.exports = {
   },
   async insertOrder(req, res) {
     const body = req.body
-    const data = await dbPool.insertOrder(body.orderer, body.orderTotalPrice, body.orderTime, body.orderRemark)
+    const data = await dbPool.insertOrder(body.orderer, body.orderTotalPrice, body.orderTime, body.orderRemark, body.shopCartArray)
     res.json(data)
   },
   async insertCart (req, res) {

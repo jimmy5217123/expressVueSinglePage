@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="orderBox" v-if="showOrder">
+      <button @click="insertOrder">結帳</button>
       <div class="shopChartFlexBox" v-for="(i,idx) in detailShopChart" :key="idx">
         <div>
           <img :src="i.setImage" width="150px" height="150px">
@@ -43,10 +44,11 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import router from './router'
 import cookies from 'vue-cookies'
+import { DateTime } from 'luxon'
 // import logo from '../dist/images/bandon_include/setdo1.jpg'
 export default {
   components: {
@@ -76,6 +78,27 @@ export default {
       'getSetProduct',
       'getShopCart'
     ]),
+    async insertOrder () {
+      const token = cookies.get('testToken')
+      const orderTime = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss')
+      const orderRemark = 'test'
+      let orderTotalPrice = 0
+      this.detailShopChart.forEach(x => {
+        orderTotalPrice = orderTotalPrice + (x.setPrice * x.carSetAmount)
+      })
+      const insertOrder = await axios.post('api/insertOrder',
+        {
+          orderer: this.memberInfo.memId,
+          orderTotalPrice,
+          orderTime,
+          orderRemark,
+          shopCartArray: this.detailShopChart
+        },
+        {
+          headers: { authorization: `bearer ${token}` }
+        })
+      if (insertOrder.data.code === 200) alert('訂單已新增')
+    },
     loginOut () {
       cookies.remove('memberInfo')
       this.MEMBER_STATUS(null)
