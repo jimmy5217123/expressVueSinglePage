@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <div class="orderBox" v-if="showOrder">
-      <button @click="insertOrder">結帳</button>
+      <div style="text-align:center; margin:5px">
+        <button @click="insertOrder">結帳</button>
+      </div>
       <div class="shopChartFlexBox" v-for="(i,idx) in detailShopChart" :key="idx">
         <div>
           <img :src="i.setImage" width="150px" height="150px">
@@ -116,6 +118,22 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  button {
+    background-color: orangered;
+    border: none;
+    color: white;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 700;
+    &:hover{
+      background: red;
+    }
+  }
 #app {
   // font-family: Avenir, Helvetica, Arial, sans-serif
   font-family: '微軟正黑體', Times, serif;
