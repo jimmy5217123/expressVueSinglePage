@@ -1,12 +1,22 @@
 require('dotenv').config()
-const mysql = require('mysql')
+// const mysql = require('mysql')
+const mysql = require('promise-mysql')
 
-const pool = mysql.createPool({
-  host     : '127.0.0.1',
-  user     : 'root',
-  password : 'may1234567',
-  database: 'product'
-})
+
+const getDbConnection = async () => {
+  return await mysql.createConnection({
+    host     : '127.0.0.1',
+    user     : 'root',
+    password : 'may1234567',
+    database: 'product'
+  })
+}
+// const pool = mysql.createPool({
+//   host     : '127.0.0.1',
+//   user     : 'root',
+//   password : 'may1234567',
+//   database: 'product'
+// })
 
 // const pool = mysql.createPool({
 //   host     : process.env.herokuMySqlHost,
@@ -16,149 +26,104 @@ const pool = mysql.createPool({
 // })
 
 module.exports = {
-  async getSetProduct () {
-    return new Promise(( resolve, reject ) => {
-      pool.getConnection((err, connection) => {
-        if(err) throw err
-        connection.query(`SELECT * FROM set_product`, (err, rows) => {
-          connection.release()
-          if(err) throw reject(err)
-          resolve(rows)
-        })
-      })
-    })
+  async getSetProduct() {
+    const db = await getDbConnection()
+    const setProduct = await db.query(`SELECT * FROM set_product`)
+    await db.end()
+    return setProduct
   },
-  async upload (bangTonName, bangTonPrice, bangTonInfo, url) {
-    return new Promise(( resolve, reject ) => {
-      pool.getConnection((err, connection) => {
-        if(err) throw err
-        connection.query(`INSERT INTO set_product VALUES (0,'${bangTonName}',${bangTonPrice},800,21,96,0,'${url}','${bangTonInfo}',1)`, (err, rows) => {
-          connection.release()
-          if(err) throw reject(err)
-          resolve({
-            code : 200
-          })
-        })
-      })
-    })
+  async upload(bangTonName, bangTonPrice, bangTonInfo, url) {
+    const db = await getDbConnection()
+    const upload = await db.query(`INSERT INTO set_product VALUES (0,'${bangTonName}',${bangTonPrice},800,21,96,0,'${url}','${bangTonInfo}',1)`).catch(err => console.log(err))
+    return {
+      code: 200
+    }
   },
   async getShopCart(memId) {
-    return new Promise(( resolve, reject ) => {
-      pool.getConnection((err, connection) => {
-        if(err) throw err
-        connection.query(`SELECT * FROM shopping_cart WHERE cartBelonger = '${memId}';`, (err, rows) => {
-          connection.release() // return the connection to pool
-          if(err) throw err
-          if (rows) {
-            resolve(rows)
-          } else {
-            resolve([])
-          }
-        })
-      })
-    })
+    const db = await getDbConnection()
+    const shopCart = await db.query(`SELECT * FROM shopping_cart WHERE cartBelonger = '${memId}'`)
+
+    let res = []
+    if (shopCart.length) {
+      res = shopCart
+    }
+
+    await db.end()
+    return res
   },
-  async getdetailShopChart (memId) {
-    return new Promise(( resolve, reject ) => {
-      pool.getConnection((err, connection) => {
-        if(err) throw err
-        connection.query(`SELECT * FROM shopping_cart INNER JOIN set_product ON  setId = cartSetId WHERE cartBelonger = '${memId}';`, (err, rows) => {
-          connection.release() // return the connection to pool
-          if(err) throw err
-          if (rows) {
-            resolve(rows)
-          } else {
-            resolve([])
-          }
-        })
-      })
-    })
+  async getdetailShopChart(memId) {
+    const db = await getDbConnection()
+    const detailShopCart = await db.query(`SELECT * FROM shopping_cart INNER JOIN set_product ON  setId = cartSetId WHERE cartBelonger = '${memId}'`)
+
+    let res = []
+    if (detailShopCart.length) {
+      res = detailShopCart
+    }
+    
+    await db.end()
+    return res
   },
-  async getHistoryOrder (memId) {
-    return new Promise(( resolve, reject ) => {
-      pool.getConnection((err, connection) => {
-        if(err) throw err
-        connection.query(`SELECT * FROM (new_order INNER JOIN set_order ON  orderId = setoBelongOrder) INNER JOIN set_product ON setoName = setId WHERE orderer = '${memId}';`, (err, rows) => {
-          connection.release() // return the connection to pool
-          if(err) throw err
-          if (rows) {
-            resolve(rows)
-          } else {
-            resolve([])
-          }
-        })
-      })
-    })
+  async getHistoryOrder(memId) {
+    const db = await getDbConnection()
+    const historyOrder = await db.query(`SELECT * FROM (new_order INNER JOIN set_order ON  orderId = setoBelongOrder) INNER JOIN set_product ON setoName = setId WHERE orderer = '${memId}'`)
+
+    let res = []
+    if (historyOrder.length) {
+      res = historyOrder
+    }
+    
+    await db.end()
+    return res
   },
-  async insertOrder (orderer, orderTotalPrice, orderTime, orderRemark, shopCartArray) {
-    return new Promise(( resolve, reject ) => {
-      pool.getConnection((err, connection) => {
-        if(err) throw err
-        connection.query(`INSERT INTO new_order VALUES (0, ${orderer}, ${orderTotalPrice}, '${orderTime}', '${orderRemark}')`, (err, rows) => {
-          connection.release() // return the connection to pool
-          if (err) throw err
-          if (rows.insertId) {
-            resolve(this.inserSetOrder(shopCartArray, rows.insertId))
-          }
-        })
-      })
-    })
+  async insertOrder(orderer, orderTotalPrice, orderTime, orderRemark, shopCartArray) {
+    const db = await getDbConnection()
+    const insertOrder = await db.query(`INSERT INTO new_order VALUES (0, ${orderer}, ${orderTotalPrice}, '${orderTime}', '${orderRemark}')`)
+
+    if (insertOrder.insertId) {
+      await db.end()
+      this.inserSetOrder(shopCartArray, insertOrder.insertId)
+    } else {
+      await db.end()
+      return {
+        code: 500
+      }
+    }
   },
   async inserSetOrder(setArray, insertId) {
-    return new Promise((resolve, reject) => {
-      pool.getConnection((err, connection) => {
-        if (err) throw err
-        for (let i = 0; i < setArray.length; i++) {
-          connection.query(`INSERT INTO set_order VALUES (0, ${setArray[i].setId}, '${setArray[i].setPrice}', '${setArray[i].carSetAmount}', '${insertId}')`, (err, rows) => {
-            // connection.release() // return the connection to pool
-            if (err) throw err
-          })
-        }
-        connection.release()
-      })
-      resolve({
-        code : 200
-      })
-    })
+    const db = await getDbConnection()
+    for (let i = 0; i < setArray.length; i++) {
+      await db.query(`INSERT INTO set_order VALUES (0, ${setArray[i].setId}, '${setArray[i].setPrice}', '${setArray[i].carSetAmount}', '${insertId}')`)
+    }
+    await db.end()
+    return {
+      code: 200
+    }
   },
-  async insertCart (setId, num, memId) {
-    return new Promise(( resolve, reject ) => {
-      pool.getConnection((err, connection) => {
-        if(err) throw err
-        connection.query(`INSERT INTO shopping_cart VALUES (0, ${setId}, ${num}, ${memId})`, (err, rows) => {
-          connection.release() // return the connection to pool
-          if (err) throw err
-          resolve({
-            code : 200
-          })
-        })
-      })
-    })
+  async insertCart(setId, num, memId) {
+    const db = await getDbConnection()
+    const insertCart = await db.query(`INSERT INTO shopping_cart VALUES (0, ${setId}, ${num}, ${memId})`).catch(err => console.log(err))
+    if (insertCart.insertId) {
+      return {
+        code: 200
+      }
+    }
   },
-  async updateCart (num, memId, setId) {
-    return new Promise(( resolve, reject ) => {
-      pool.getConnection((err, connection) => {
-        if(err) throw err
-        connection.query(`UPDATE  shopping_cart SET carSetAmount = '${num}' WHERE cartBelonger = '${memId}' AND cartSetId = '${setId}'`, (err) => {
-          connection.release() // return the connection to pool
-          if(err) throw err
-          resolve({
-            code : 200
-          })
-        })
-      })
-    })
+  async updateCart(num, memId, setId) {
+    const db = await getDbConnection()
+    const updateCart = await db.query(`UPDATE  shopping_cart SET carSetAmount = '${num}' WHERE cartBelonger = '${memId}' AND cartSetId = '${setId}'`).catch(err => console.log(err))
+    return {
+      code: 200
+    }
   },
-  async login (account, password) {
-    return new Promise(( resolve, reject ) => {
-      pool.getConnection((err, connection) => {
-        if(err) throw err
-        connection.query(`SELECT * FROM member WHERE memEmail = '${account}' AND memPsw = '${password}';`, (err, rows) => {
-          connection.release() // return the connection to pool
-          if(err) throw err
-          resolve(rows[0])
-        })
-      })
-    })
+  async login(account, password) {
+    const db = await getDbConnection()
+    const login = await db.query(`SELECT * FROM member WHERE memEmail = '${account}' AND memPsw = '${password}'`)
+    if (login.length) {
+      return login[0]
+    } else {
+      return {
+        code: 500
+      }
+    }
   }
 }
