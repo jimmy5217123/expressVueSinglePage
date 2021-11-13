@@ -21,10 +21,10 @@ router.get('/getSetProduct', authenticateToken, getSetProduct)
 router.post('/upload', authenticateToken, uploadData.single('imgFile'), upload)
 router.post('/getShopCart', authenticateToken, getShopCart)
 router.post('/getdetailShopChart', authenticateToken, getdetailShopChart)
-router.post('/getHistoryOrder', getHistoryOrder)
+router.post('/getHistoryOrder', authenticateToken, getHistoryOrder)
 router.post('/insertCart', authenticateToken, insertCart)
 router.post('/insertOrder', authenticateToken, insertOrder)
 router.put('/updateCart', authenticateToken, updateCart)
-router.post('/login', authenticateToken, login)
+router.post('/login', login)
 
 module.exports = router
