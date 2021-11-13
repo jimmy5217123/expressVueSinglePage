@@ -8,9 +8,9 @@
       <div style="display: flex;flex-wrap: wrap;">
         <div v-for="(i, idx) in setProduct.data" :key="idx" style="width:50%; min-width:350px">
           <div class="titleBoder"><h3 style="margin-bottom:0px">{{i.setName}} ${{i.setPrice}}</h3></div>
-          <div style="display:flex">
+          <div style="display:flex;">
             <img :src="i.setImage" width="150px;" height="160px">
-            <div style="padding:10px">
+            <div style="padding:10px; width:100%">
               <div class="infoClass"><p>{{i.setInfo}}</p></div>
               <div style="text-align:right; margin-right:15px">
                 <input style="width:30px; margin-right:5px" min="1" type='number' name="setHowMany" :value="1" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')">
@@ -55,7 +55,7 @@
               </div>
               <div class="formDiv">
                 <label for="bangTonPrice">便當價格:</label>
-                <input type="number" min="1" name="bangTonPrice" id="bangTonPrice">
+                <input type="number" min="1" name="bangTonPrice" id="bangTonPrice" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
               </div>
               <div class="formDiv">
                 <label for="bangTonInfo">便當資訊:</label>
