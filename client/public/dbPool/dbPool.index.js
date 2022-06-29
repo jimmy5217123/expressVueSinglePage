@@ -3,14 +3,14 @@ require('dotenv').config()
 const mysql = require('promise-mysql')
 
 
-const getDbConnection = async () => {
-  return await mysql.createConnection({
-    host     : '127.0.0.1',
-    user     : 'root',
-    password : 'may1234567',
-    database: 'product'
-  })
-}
+// const getDbConnection = async () => {
+//   return await mysql.createConnection({
+//     host     : '127.0.0.1',
+//     user     : 'root',
+//     password : 'may1234567',
+//     database: 'product'
+//   })
+// }
 // const pool = mysql.createPool({
 //   host     : '127.0.0.1',
 //   user     : 'root',
@@ -18,12 +18,12 @@ const getDbConnection = async () => {
 //   database: 'product'
 // })
 
-// const pool = mysql.createPool({
-//   host     : process.env.herokuMySqlHost,
-//   user     : process.env.herokuMySqlUser,
-//   password : process.env.herokuMySqlPassword,
-//   database: process.env.herokuMySqlDatabase
-// })
+const pool = mysql.createPool({
+  host     : process.env.herokuMySqlHost,
+  user     : process.env.herokuMySqlUser,
+  password : process.env.herokuMySqlPassword,
+  database: process.env.herokuMySqlDatabase
+})
 
 module.exports = {
   async getSetProduct() {
