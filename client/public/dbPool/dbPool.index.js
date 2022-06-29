@@ -17,7 +17,14 @@ const mysql = require('promise-mysql')
 //   password : 'may1234567',
 //   database: 'product'
 // })
-
+const getDbConnection = async () => {
+  return await mysql.createConnection({
+    host     : process.env.herokuMySqlHost,
+    user     : process.env.herokuMySqlUser,
+    password : process.env.herokuMySqlPassword,
+    database: process.env.herokuMySqlDatabase
+  })
+}
 const pool = mysql.createPool({
   host     : process.env.herokuMySqlHost,
   user     : process.env.herokuMySqlUser,
